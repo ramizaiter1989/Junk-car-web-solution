@@ -1,0 +1,25 @@
+export const BUSINESS = {
+  name: "Wayne Automotive Recyclers LLC",
+  shortName: "Wayne Automotive Recyclers",
+  address: {
+    street: "36597 Annapolis",
+    city: "Wayne",
+    region: "MI",
+    regionName: "Michigan",
+    postal: "48184",
+    country: "US",
+    full: "36597 Annapolis, Wayne, Michigan, USA",
+  },
+  phones: ["313-500-6233", "313-286-6491"],
+  primaryPhone: "313-500-6233",
+  primaryPhoneHref: "tel:+13135006233",
+  secondaryPhoneHref: "tel:+13132866491",
+  email: "info@wayneautorecyclers.com",
+  hours: "Mon–Sat 7:00 AM – 8:00 PM • Sun by appointment",
+  geo: { lat: 42.281, lng: -83.386 },
+  serviceArea: [
+    "Wayne", "Westland", "Garden City", "Inkster", "Dearborn Heights", "Dearborn",
+    "Livonia", "Romulus", "Taylor", "Canton", "Plymouth", "Redford",
+    "Detroit", "Southfield", "Ann Arbor", "Ypsilanti", "Belleville", "Allen Park",
+  ],
+} as const;
