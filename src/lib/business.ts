@@ -1,4 +1,5 @@
 import { DOMAIN_PHONES } from "./domains";
+import { normalizeHost } from "./host";
 
 export type SiteBusiness = {
   name: string;
@@ -50,10 +51,6 @@ export const DEFAULT_BUSINESS: SiteBusiness = {
 /** @deprecated Use `useSiteBusiness()` or `DEFAULT_BUSINESS` */
 export const BUSINESS = DEFAULT_BUSINESS;
 
-export function normalizeHost(host: string): string {
-  return host.replace(/^www\./i, "").toLowerCase().split(":")[0] ?? host;
-}
-
 export function formatPhoneDisplay(digits: string): string {
   const d = digits.replace(/\D/g, "");
   if (d.length === 10) {
@@ -83,7 +80,9 @@ function phonesFromDigits(digits: readonly string[]): Pick<
 export function resolveBusiness(host?: string | null): SiteBusiness {
   if (!host) return DEFAULT_BUSINESS;
 
-  const digits = DOMAIN_PHONES[normalizeHost(host)];
+  const key = host.toLowerCase().split(":")[0] ?? host;
+  const digits =
+    DOMAIN_PHONES[key] ?? DOMAIN_PHONES[normalizeHost(key)];
   if (!digits?.length) return DEFAULT_BUSINESS;
 
   return {
