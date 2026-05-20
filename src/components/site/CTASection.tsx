@@ -6,6 +6,7 @@ export function CTASection({
   title = "Ready to turn that junk car into cash?",
   subtitle = "Free towing, same-day pickup, and a guaranteed cash offer across all of Michigan.",
 }: { title?: string; subtitle?: string }) {
+  const business = useSiteBusiness();
   return (
     <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 my-20">
       <div className="relative overflow-hidden rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/15 via-card to-card p-8 sm:p-12">

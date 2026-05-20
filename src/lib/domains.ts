@@ -1,12 +1,12 @@
 import { normalizeHost } from "./host";
 
 /**
- * Domains that share the same phone line(s). Use digits only (no dashes).
- * List the canonical host without `www` — www variants are added automatically.
+ * Override phones for specific domains only. All other hosts use DEFAULT_BUSINESS
+ * (313-500-6233 / 313-286-6491). List canonical host without `www` — www is added automatically.
  */
 const DOMAIN_GROUPS: { hosts: readonly string[]; phones: readonly string[] }[] = [
   {
-    hosts: ["michiganjunkcar.online", "junkcars.shop"],
+    hosts: ["michiganjunkcar.online"],
     phones: ["2484172552"],
   },
 ];
