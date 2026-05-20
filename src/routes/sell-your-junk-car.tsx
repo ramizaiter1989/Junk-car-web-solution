@@ -2,13 +2,20 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { QuoteForm } from "@/components/site/QuoteForm";
 import { CTASection } from "@/components/site/CTASection";
+import { callInMeta } from "@/lib/business";
 import { CheckCircle2 } from "lucide-react";
 
 export const Route = createFileRoute("/sell-your-junk-car")({
-  head: () => ({
+  head: ({ match }) => ({
     meta: [
       { title: "Sell My Junk Car in Michigan | Instant Cash Offer | Wayne Auto Recyclers" },
-      { name: "description", content: "Sell your junk car in Michigan for top cash. Free same-day towing, instant guaranteed offers, and easy paperwork. Call 313-500-6233 today." },
+      {
+        name: "description",
+        content: callInMeta(
+          "Sell your junk car in Michigan for top cash. Free same-day towing, instant guaranteed offers, and easy paperwork. Call 313-500-6233 today.",
+          match.context.business,
+        ),
+      },
       { property: "og:title", content: "Sell Your Junk Car in Michigan — Instant Cash Offer" },
       { property: "og:description", content: "Get the most cash for your junk car in Michigan. Free towing and same-day pickup." },
       { property: "og:url", content: "/sell-your-junk-car" },

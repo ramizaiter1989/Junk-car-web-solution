@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Instagram, Mail, MapPin, Phone, Clock, Youtube } from "lucide-react";
-import { BUSINESS } from "@/lib/business";
+import { useSiteBusiness } from "@/lib/use-site-business";
 
 export function Footer() {
+  const business = useSiteBusiness();
   return (
     <footer className="mt-20 border-t border-border bg-card/40">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
@@ -51,15 +52,17 @@ export function Footer() {
           <div>
             <h4 className="text-sm font-bold uppercase tracking-widest text-foreground mb-4">Contact</h4>
             <ul className="space-y-3 text-sm text-muted-foreground">
-              <li className="flex gap-2"><MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" /><span>{BUSINESS.address.full}</span></li>
+              <li className="flex gap-2"><MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" /><span>{business.address.full}</span></li>
               <li className="flex gap-2"><Phone className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                 <span>
-                  <a href={BUSINESS.primaryPhoneHref} className="block hover:text-primary">{BUSINESS.phones[0]}</a>
-                  <a href={BUSINESS.secondaryPhoneHref} className="block hover:text-primary">{BUSINESS.phones[1]}</a>
+                  <a href={business.primaryPhoneHref} className="block hover:text-primary">{business.phones[0]}</a>
+                  {business.secondaryPhoneHref && business.phones[1] ? (
+                    <a href={business.secondaryPhoneHref} className="block hover:text-primary">{business.phones[1]}</a>
+                  ) : null}
                 </span>
               </li>
-              <li className="flex gap-2"><Mail className="h-4 w-4 text-primary shrink-0 mt-0.5" /><a href={`mailto:${BUSINESS.email}`} className="hover:text-primary">{BUSINESS.email}</a></li>
-              <li className="flex gap-2"><Clock className="h-4 w-4 text-primary shrink-0 mt-0.5" /><span>{BUSINESS.hours}</span></li>
+              <li className="flex gap-2"><Mail className="h-4 w-4 text-primary shrink-0 mt-0.5" /><a href={`mailto:${business.email}`} className="hover:text-primary">{business.email}</a></li>
+              <li className="flex gap-2"><Clock className="h-4 w-4 text-primary shrink-0 mt-0.5" /><span>{business.hours}</span></li>
             </ul>
           </div>
         </div>

@@ -1,13 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { CTASection } from "@/components/site/CTASection";
+import { callInMeta } from "@/lib/business";
 import { Truck, Clock, MapPin, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/junk-car-removal")({
-  head: () => ({
+  head: ({ match }) => ({
     meta: [
       { title: "Free Junk Car Removal in Wayne MI | Same-Day Pickup | Wayne Auto Recyclers" },
-      { name: "description", content: "Free junk car removal in Wayne, Michigan and all of Metro Detroit. Same-day pickup, no hidden fees, top cash paid on the spot. Call 313-500-6233." },
+      {
+        name: "description",
+        content: callInMeta(
+          "Free junk car removal in Wayne, Michigan and all of Metro Detroit. Same-day pickup, no hidden fees, top cash paid on the spot. Call 313-500-6233.",
+          match.context.business,
+        ),
+      },
       { property: "og:title", content: "Free Junk Car Removal Wayne MI — Same-Day Pickup" },
       { property: "og:description", content: "We tow your junk car for free and pay you cash on the spot. Serving all of Michigan." },
       { property: "og:url", content: "/junk-car-removal" },

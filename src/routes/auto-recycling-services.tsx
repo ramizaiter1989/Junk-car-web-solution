@@ -2,13 +2,20 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { CTASection } from "@/components/site/CTASection";
 import yardImg from "@/assets/recycling-yard.jpg";
+import { callInMeta } from "@/lib/business";
 import { Recycle, Droplets, Cog, Factory } from "lucide-react";
 
 export const Route = createFileRoute("/auto-recycling-services")({
-  head: () => ({
+  head: ({ match }) => ({
     meta: [
       { title: "Auto Recycling Services Michigan | EPA-Compliant | Wayne Auto Recyclers" },
-      { name: "description", content: "Certified automotive recycling services in Michigan. EPA-compliant fluid recovery, parts reclamation, and scrap metal processing. Call 313-500-6233." },
+      {
+        name: "description",
+        content: callInMeta(
+          "Certified automotive recycling services in Michigan. EPA-compliant fluid recovery, parts reclamation, and scrap metal processing. Call 313-500-6233.",
+          match.context.business,
+        ),
+      },
       { property: "og:title", content: "Auto Recycling Services Michigan | Wayne Automotive Recyclers" },
       { property: "og:description", content: "Licensed Michigan auto recycling company — eco-friendly, EPA-compliant, full-service." },
       { property: "og:url", content: "/auto-recycling-services" },

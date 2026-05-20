@@ -6,15 +6,22 @@ import {
 import heroImg from "@/assets/hero-tow.jpg";
 import yardImg from "@/assets/recycling-yard.jpg";
 import cashImg from "@/assets/cash-handoff.jpg";
-import { BUSINESS } from "@/lib/business";
+import { callInMeta } from "@/lib/business";
+import { useSiteBusiness } from "@/lib/use-site-business";
 import { QuoteForm } from "@/components/site/QuoteForm";
 import { CTASection } from "@/components/site/CTASection";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
+  head: ({ match }) => ({
     meta: [
       { title: "Cash For Junk Cars in Michigan | Wayne Automotive Recyclers LLC" },
-      { name: "description", content: "Get top cash for your junk car in Michigan. Wayne Automotive Recyclers offers free same-day towing, instant quotes, and trusted auto recycling. Call 313-500-6233." },
+      {
+        name: "description",
+        content: callInMeta(
+          "Get top cash for your junk car in Michigan. Wayne Automotive Recyclers offers free same-day towing, instant quotes, and trusted auto recycling. Call 313-500-6233.",
+          match.context.business,
+        ),
+      },
       { property: "og:title", content: "Cash For Junk Cars in Michigan | Wayne Automotive Recyclers" },
       { property: "og:description", content: "Free towing. Instant offers. Top cash for junk, damaged, and unwanted vehicles across Michigan." },
       { property: "og:url", content: "/" },
@@ -39,6 +46,7 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
+  const business = useSiteBusiness();
   return (
     <>
       {/* HERO */}
@@ -70,8 +78,8 @@ function HomePage() {
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
-                <a href={BUSINESS.primaryPhoneHref} className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-4 text-sm font-bold uppercase tracking-wider text-primary-foreground shadow-xl shadow-primary/30 hover:scale-[1.02] transition-transform">
-                  <Phone className="h-4 w-4" /> Call Now • {BUSINESS.primaryPhone}
+                <a href={business.primaryPhoneHref} className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-4 text-sm font-bold uppercase tracking-wider text-primary-foreground shadow-xl shadow-primary/30 hover:scale-[1.02] transition-transform">
+                  <Phone className="h-4 w-4" /> Call Now • {business.primaryPhone}
                 </a>
                 <a href="#quote" className="inline-flex items-center gap-2 rounded-md border border-border bg-background/60 backdrop-blur px-6 py-4 text-sm font-bold uppercase tracking-wider hover:bg-secondary">
                   Get Instant Quote <ArrowRight className="h-4 w-4" />
@@ -173,7 +181,7 @@ function HomePage() {
               <h2 className="mt-2 font-display text-4xl sm:text-5xl font-bold">Sell your junk car in 3 easy steps</h2>
               <ol className="mt-8 space-y-6">
                 {[
-                  { n: "01", Icon: Phone, t: "Tell us about your car", d: "Call 313-500-6233 or submit our 30-second form with your vehicle details and ZIP code." },
+                  { n: "01", Icon: Phone, t: "Tell us about your car", d: `Call ${business.primaryPhone} or submit our 30-second form with your vehicle details and ZIP code.` },
                   { n: "02", Icon: DollarSign, t: "Get your instant cash offer", d: "We&apos;ll respond within 15 minutes with a guaranteed top-dollar quote — no haggling." },
                   { n: "03", Icon: Truck, t: "Free pickup, instant cash", d: "We tow your junk car for free, often same-day, and pay you cash on the spot." },
                 ].map(({ n, Icon, t, d }) => (
@@ -325,17 +333,19 @@ function HomePage() {
               Located in the heart of Wayne, MI — easy to reach from anywhere in Metro Detroit.
             </p>
             <ul className="mt-6 space-y-4 text-sm">
-              <li className="flex gap-3"><MapPin className="h-5 w-5 text-primary shrink-0" /><span>{BUSINESS.address.full}</span></li>
+              <li className="flex gap-3"><MapPin className="h-5 w-5 text-primary shrink-0" /><span>{business.address.full}</span></li>
               <li className="flex gap-3"><Phone className="h-5 w-5 text-primary shrink-0" />
                 <span>
-                  <a href={BUSINESS.primaryPhoneHref} className="block hover:text-primary font-semibold">{BUSINESS.phones[0]}</a>
-                  <a href={BUSINESS.secondaryPhoneHref} className="block hover:text-primary font-semibold">{BUSINESS.phones[1]}</a>
+                  <a href={business.primaryPhoneHref} className="block hover:text-primary font-semibold">{business.phones[0]}</a>
+                  {business.secondaryPhoneHref && business.phones[1] ? (
+                    <a href={business.secondaryPhoneHref} className="block hover:text-primary font-semibold">{business.phones[1]}</a>
+                  ) : null}
                 </span>
               </li>
-              <li className="flex gap-3"><Clock className="h-5 w-5 text-primary shrink-0" /><span>{BUSINESS.hours}</span></li>
+              <li className="flex gap-3"><Clock className="h-5 w-5 text-primary shrink-0" /><span>{business.hours}</span></li>
             </ul>
             <div className="mt-6 flex flex-wrap gap-3">
-              <a href={BUSINESS.primaryPhoneHref} className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-bold uppercase tracking-wider text-primary-foreground hover:bg-primary/90">
+              <a href={business.primaryPhoneHref} className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-bold uppercase tracking-wider text-primary-foreground hover:bg-primary/90">
                 <Phone className="h-4 w-4" /> Call Now
               </a>
               <Link to="/contact" className="inline-flex items-center gap-2 rounded-md border border-border bg-secondary/60 px-5 py-3 text-sm font-bold uppercase tracking-wider hover:bg-secondary">

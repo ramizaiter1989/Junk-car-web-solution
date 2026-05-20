@@ -1,8 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import type {} from "@tanstack/react-start";
 
-// TODO: replace with your project URL once a custom domain is set.
-const BASE_URL = "";
+import { getRequestOrigin, toAbsoluteUrl } from "@/lib/site-url";
 
 interface SitemapEntry {
   path: string;
@@ -10,30 +8,34 @@ interface SitemapEntry {
   priority?: string;
 }
 
+const SITEMAP_ENTRIES: SitemapEntry[] = [
+  { path: "/", changefreq: "weekly", priority: "1.0" },
+  { path: "/about", changefreq: "monthly", priority: "0.7" },
+  { path: "/sell-your-junk-car", changefreq: "weekly", priority: "0.9" },
+  { path: "/junk-car-removal", changefreq: "weekly", priority: "0.9" },
+  { path: "/auto-recycling-services", changefreq: "monthly", priority: "0.8" },
+  { path: "/used-auto-parts", changefreq: "weekly", priority: "0.8" },
+  { path: "/areas-we-serve", changefreq: "monthly", priority: "0.7" },
+  { path: "/faq", changefreq: "monthly", priority: "0.6" },
+  { path: "/contact", changefreq: "monthly", priority: "0.7" },
+];
+
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
-      GET: async () => {
-        const entries: SitemapEntry[] = [
-          { path: "/", changefreq: "weekly", priority: "1.0" },
-          { path: "/about", changefreq: "monthly", priority: "0.7" },
-          { path: "/sell-your-junk-car", changefreq: "weekly", priority: "0.9" },
-          { path: "/junk-car-removal", changefreq: "weekly", priority: "0.9" },
-          { path: "/auto-recycling-services", changefreq: "monthly", priority: "0.8" },
-          { path: "/used-auto-parts", changefreq: "weekly", priority: "0.8" },
-          { path: "/areas-we-serve", changefreq: "monthly", priority: "0.7" },
-          { path: "/faq", changefreq: "monthly", priority: "0.6" },
-          { path: "/contact", changefreq: "monthly", priority: "0.7" },
-        ];
+      GET: async ({ request }) => {
+        const origin = getRequestOrigin(request);
 
-        const urls = entries.map((e) =>
+        const urls = SITEMAP_ENTRIES.map((entry) =>
           [
             `  <url>`,
-            `    <loc>${BASE_URL}${e.path}</loc>`,
-            e.changefreq ? `    <changefreq>${e.changefreq}</changefreq>` : null,
-            e.priority ? `    <priority>${e.priority}</priority>` : null,
+            `    <loc>${toAbsoluteUrl(entry.path, origin)}</loc>`,
+            entry.changefreq ? `    <changefreq>${entry.changefreq}</changefreq>` : null,
+            entry.priority ? `    <priority>${entry.priority}</priority>` : null,
             `  </url>`,
-          ].filter(Boolean).join("\n"),
+          ]
+            .filter(Boolean)
+            .join("\n"),
         );
 
         const xml = [
@@ -44,7 +46,10 @@ export const Route = createFileRoute("/sitemap.xml")({
         ].join("\n");
 
         return new Response(xml, {
-          headers: { "Content-Type": "application/xml", "Cache-Control": "public, max-age=3600" },
+          headers: {
+            "Content-Type": "application/xml; charset=utf-8",
+            "Cache-Control": "public, max-age=3600",
+          },
         });
       },
     },

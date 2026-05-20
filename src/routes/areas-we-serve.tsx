@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { CTASection } from "@/components/site/CTASection";
-import { BUSINESS } from "@/lib/business";
+import { useSiteBusiness } from "@/lib/use-site-business";
 import { MapPin } from "lucide-react";
 
 export const Route = createFileRoute("/areas-we-serve")({
@@ -19,6 +19,7 @@ export const Route = createFileRoute("/areas-we-serve")({
 });
 
 function AreasPage() {
+  const business = useSiteBusiness();
   return (
     <>
       <PageHero
@@ -35,7 +36,7 @@ function AreasPage() {
         </p>
 
         <div className="mt-10 grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
-          {BUSINESS.serviceArea.map((c) => (
+          {business.serviceArea.map((c) => (
             <div key={c} className="flex items-center gap-3 rounded-lg border border-border bg-card p-4 hover:border-primary/40 transition-colors">
               <MapPin className="h-5 w-5 text-primary" />
               <span className="font-semibold">{c}, MI</span>
@@ -46,7 +47,7 @@ function AreasPage() {
         <div className="mt-14 rounded-2xl border border-border bg-card/40 p-8">
           <h3 className="font-display text-2xl font-bold">Headquartered in Wayne, Michigan</h3>
           <p className="mt-2 text-muted-foreground max-w-3xl">
-            Our central Wayne, MI yard at <strong className="text-foreground">{BUSINESS.address.full}</strong> sits just minutes from I-94, I-275, and Michigan Avenue — giving our tow trucks fast access to nearly every Metro Detroit zip code.
+            Our central Wayne, MI yard at <strong className="text-foreground">{business.address.full}</strong> sits just minutes from I-94, I-275, and Michigan Avenue — giving our tow trucks fast access to nearly every Metro Detroit zip code.
           </p>
         </div>
       </section>

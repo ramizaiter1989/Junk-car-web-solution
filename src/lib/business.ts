@@ -1,4 +1,30 @@
-export const BUSINESS = {
+import { DOMAIN_PHONES } from "./domains";
+
+export type SiteBusiness = {
+  name: string;
+  shortName: string;
+  address: {
+    street: string;
+    city: string;
+    region: string;
+    regionName: string;
+    postal: string;
+    country: string;
+    full: string;
+  };
+  phones: readonly string[];
+  primaryPhone: string;
+  primaryPhoneHref: string;
+  secondaryPhoneHref?: string;
+  email: string;
+  hours: string;
+  geo: { lat: number; lng: number };
+  serviceArea: readonly string[];
+};
+
+const DEFAULT_PHONE_DIGITS = ["3135006233", "3132866491"] as const;
+
+export const DEFAULT_BUSINESS: SiteBusiness = {
   name: "Wayne Automotive Recyclers LLC",
   shortName: "Wayne Automotive Recyclers",
   address: {
@@ -10,10 +36,7 @@ export const BUSINESS = {
     country: "US",
     full: "36597 Annapolis, Wayne, Michigan, USA",
   },
-  phones: ["313-500-6233", "313-286-6491"],
-  primaryPhone: "313-500-6233",
-  primaryPhoneHref: "tel:+13135006233",
-  secondaryPhoneHref: "tel:+13132866491",
+  ...phonesFromDigits(DEFAULT_PHONE_DIGITS),
   email: "info@wayneautorecyclers.com",
   hours: "Mon–Sat 7:00 AM – 8:00 PM • Sun by appointment",
   geo: { lat: 42.281, lng: -83.386 },
@@ -22,4 +45,58 @@ export const BUSINESS = {
     "Livonia", "Romulus", "Taylor", "Canton", "Plymouth", "Redford",
     "Detroit", "Southfield", "Ann Arbor", "Ypsilanti", "Belleville", "Allen Park",
   ],
-} as const;
+};
+
+/** @deprecated Use `useSiteBusiness()` or `DEFAULT_BUSINESS` */
+export const BUSINESS = DEFAULT_BUSINESS;
+
+export function normalizeHost(host: string): string {
+  return host.replace(/^www\./i, "").toLowerCase().split(":")[0] ?? host;
+}
+
+export function formatPhoneDisplay(digits: string): string {
+  const d = digits.replace(/\D/g, "");
+  if (d.length === 10) {
+    return `${d.slice(0, 3)}-${d.slice(3, 6)}-${d.slice(6)}`;
+  }
+  return digits;
+}
+
+export function toTelHref(digits: string): string {
+  const d = digits.replace(/\D/g, "");
+  return `tel:+1${d}`;
+}
+
+function phonesFromDigits(digits: readonly string[]): Pick<
+  SiteBusiness,
+  "phones" | "primaryPhone" | "primaryPhoneHref" | "secondaryPhoneHref"
+> {
+  const phones = digits.map(formatPhoneDisplay);
+  return {
+    phones,
+    primaryPhone: phones[0]!,
+    primaryPhoneHref: toTelHref(digits[0]!),
+    secondaryPhoneHref: digits[1] ? toTelHref(digits[1]) : undefined,
+  };
+}
+
+export function resolveBusiness(host?: string | null): SiteBusiness {
+  if (!host) return DEFAULT_BUSINESS;
+
+  const digits = DOMAIN_PHONES[normalizeHost(host)];
+  if (!digits?.length) return DEFAULT_BUSINESS;
+
+  return {
+    ...DEFAULT_BUSINESS,
+    ...phonesFromDigits(digits),
+  };
+}
+
+/** Rewrites phone numbers in meta descriptions for the active domain. */
+export function callInMeta(text: string, business: SiteBusiness): string {
+  const phrase =
+    business.phones.length > 1
+      ? `Call ${business.phones[0]} or ${business.phones[1]}.`
+      : `Call ${business.primaryPhone}.`;
+  return text.replace(/Call [\d-]+(?:\s+or\s+[\d-]+)?(?:\s+today)?\.?/gi, phrase);
+}

@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, Phone, X } from "lucide-react";
-import { BUSINESS } from "@/lib/business";
+import { useSiteBusiness } from "@/lib/use-site-business";
 
 const nav = [
   { to: "/", label: "Home" },
@@ -16,6 +16,7 @@ const nav = [
 ] as const;
 
 export function Header() {
+  const business = useSiteBusiness();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -66,11 +67,11 @@ export function Header() {
 
           <div className="flex items-center gap-2">
             <a
-              href={BUSINESS.primaryPhoneHref}
+              href={business.primaryPhoneHref}
               className="hidden sm:inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground shadow-md shadow-primary/30 hover:bg-primary/90 hover:scale-[1.02] transition-all"
             >
               <Phone className="h-4 w-4" />
-              {BUSINESS.primaryPhone}
+              {business.primaryPhone}
             </a>
             <button
               aria-label="Toggle menu"
@@ -99,10 +100,10 @@ export function Header() {
               </Link>
             ))}
             <a
-              href={BUSINESS.primaryPhoneHref}
+              href={business.primaryPhoneHref}
               className="sm:hidden mt-2 inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-3 text-sm font-bold text-primary-foreground"
             >
-              <Phone className="h-4 w-4" /> Call {BUSINESS.primaryPhone}
+              <Phone className="h-4 w-4" /> Call {business.primaryPhone}
             </a>
           </nav>
         </div>

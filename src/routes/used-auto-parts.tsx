@@ -2,13 +2,21 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { CTASection } from "@/components/site/CTASection";
 import partsImg from "@/assets/used-parts.jpg";
+import { callInMeta } from "@/lib/business";
+import { useSiteBusiness } from "@/lib/use-site-business";
 import { CheckCircle2 } from "lucide-react";
 
 export const Route = createFileRoute("/used-auto-parts")({
-  head: () => ({
+  head: ({ match }) => ({
     meta: [
       { title: "Used Auto Parts Michigan | Tested & Warrantied | Wayne Auto Recyclers" },
-      { name: "description", content: "Quality used auto parts in Michigan — engines, transmissions, body panels, electronics. Tested, warrantied, and ready to ship. Call 313-500-6233." },
+      {
+        name: "description",
+        content: callInMeta(
+          "Quality used auto parts in Michigan — engines, transmissions, body panels, electronics. Tested, warrantied, and ready to ship. Call 313-500-6233.",
+          match.context.business,
+        ),
+      },
       { property: "og:title", content: "Used Auto Parts Michigan | Wayne Automotive Recyclers" },
       { property: "og:description", content: "Save up to 70% vs new with tested used auto parts from Michigan&apos;s trusted recycler." },
       { property: "og:url", content: "/used-auto-parts" },
@@ -19,6 +27,7 @@ export const Route = createFileRoute("/used-auto-parts")({
 });
 
 function PartsPage() {
+  const business = useSiteBusiness();
   return (
     <>
       <PageHero
@@ -52,7 +61,7 @@ function PartsPage() {
               ))}
             </ul>
             <p className="mt-6 text-sm text-muted-foreground">
-              Can&apos;t find your part? Call <strong className="text-foreground">313-500-6233</strong> — we source parts daily across our network of Michigan auto recyclers.
+              Can&apos;t find your part? Call <strong className="text-foreground">{business.primaryPhone}</strong> — we source parts daily across our network of Michigan auto recyclers.
             </p>
           </div>
           <img src={partsImg} alt="Warehouse of used auto parts for sale at Wayne Automotive Recyclers in Michigan" width={1280} height={896} loading="lazy" className="rounded-2xl border border-border shadow-2xl shadow-black/40" />

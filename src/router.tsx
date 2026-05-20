@@ -1,5 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import { createRouter } from "@tanstack/react-router";
+import { DEFAULT_BUSINESS } from "./lib/business";
 import { routeTree } from "./routeTree.gen";
 
 export const getRouter = () => {
@@ -7,7 +8,7 @@ export const getRouter = () => {
 
   const router = createRouter({
     routeTree,
-    context: { queryClient },
+    context: { queryClient, business: DEFAULT_BUSINESS },
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
   });

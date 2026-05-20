@@ -11,9 +11,12 @@ import {
 import appCss from "../styles.css?url";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
-import { BUSINESS } from "@/lib/business";
+import { callInMeta, resolveBusiness, type SiteBusiness } from "@/lib/business";
+import { getSiteBusiness } from "@/lib/get-site-business";
+import { useSiteBusiness } from "@/lib/use-site-business";
 
 function NotFoundComponent() {
+  const business = useSiteBusiness();
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
@@ -26,8 +29,8 @@ function NotFoundComponent() {
           <Link to="/" className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-bold text-primary-foreground hover:bg-primary/90">
             Go home
           </Link>
-          <a href={BUSINESS.primaryPhoneHref} className="inline-flex items-center justify-center rounded-md border border-border px-4 py-2 text-sm font-semibold hover:bg-secondary">
-            Call {BUSINESS.primaryPhone}
+          <a href={business.primaryPhoneHref} className="inline-flex items-center justify-center rounded-md border border-border px-4 py-2 text-sm font-semibold hover:bg-secondary">
+            Call {business.primaryPhone}
           </a>
         </div>
       </div>
@@ -57,46 +60,61 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-const orgJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "AutomotiveBusiness",
-  name: BUSINESS.name,
-  image: "/og-image.jpg",
-  telephone: BUSINESS.phones[0],
-  email: BUSINESS.email,
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: BUSINESS.address.street,
-    addressLocality: BUSINESS.address.city,
-    addressRegion: BUSINESS.address.region,
-    postalCode: BUSINESS.address.postal,
-    addressCountry: BUSINESS.address.country,
-  },
-  geo: { "@type": "GeoCoordinates", latitude: BUSINESS.geo.lat, longitude: BUSINESS.geo.lng },
-  openingHours: "Mo-Sa 07:00-20:00",
-  priceRange: "$$",
-  areaServed: BUSINESS.serviceArea.map((c) => ({ "@type": "City", name: c })),
-  sameAs: [] as string[],
-};
+function orgJsonLd(business: SiteBusiness) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "AutomotiveBusiness",
+    name: business.name,
+    image: "/og-image.jpg",
+    telephone: business.phones[0],
+    email: business.email,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: business.address.street,
+      addressLocality: business.address.city,
+      addressRegion: business.address.region,
+      postalCode: business.address.postal,
+      addressCountry: business.address.country,
+    },
+    geo: { "@type": "GeoCoordinates", latitude: business.geo.lat, longitude: business.geo.lng },
+    openingHours: "Mo-Sa 07:00-20:00",
+    priceRange: "$$",
+    areaServed: business.serviceArea.map((c) => ({ "@type": "City", name: c })),
+    sameAs: [] as string[],
+  };
+}
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
+export const Route = createRootRouteWithContext<{
+  queryClient: QueryClient;
+  business: SiteBusiness;
+}>()({
+  beforeLoad: async () => {
+    if (typeof window !== "undefined") {
+      return { business: resolveBusiness(window.location.hostname) };
+    }
+    return { business: await getSiteBusiness() };
+  },
+  head: ({ match }) => {
+    const business = match.context.business;
+    const description = callInMeta(
+      "Wayne Automotive Recyclers LLC pays top cash for junk cars in Wayne, Michigan. Free same-day towing, instant quotes, and certified auto recycling. Call 313-500-6233.",
+      business,
+    );
+    return {
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "theme-color", content: "#1a1d22" },
       { title: "Wayne Automotive Recyclers LLC | Cash For Junk Cars in Michigan" },
-      { name: "description", content: "Wayne Automotive Recyclers LLC pays top cash for junk cars in Wayne, Michigan. Free same-day towing, instant quotes, and certified auto recycling. Call 313-500-6233." },
+      { name: "description", content: description },
       { name: "author", content: "Wayne Automotive Recyclers LLC" },
       { property: "og:site_name", content: "Wayne Automotive Recyclers LLC" },
       { property: "og:type", content: "website" },
       { property: "og:title", content: "Wayne Automotive Recyclers LLC | Cash For Junk Cars in Michigan" },
-      { property: "og:description", content: "Wayne Automotive Recyclers LLC pays top cash for junk cars in Wayne, Michigan. Free same-day towing, instant quotes, and certified auto recycling. Call 313-500-6233." },
+      { property: "og:description", content: description },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Wayne Automotive Recyclers LLC | Cash For Junk Cars in Michigan" },
-      { name: "twitter:description", content: "Wayne Automotive Recyclers LLC pays top cash for junk cars in Wayne, Michigan. Free same-day towing, instant quotes, and certified auto recycling. Call 313-500-6233." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/988761ab-39fb-40b7-abeb-85bd7a832c0c/id-preview-8254304c--0850b8d0-4f75-429b-a9f6-66dca2e96b49.lovable.app-1779058166428.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/988761ab-39fb-40b7-abeb-85bd7a832c0c/id-preview-8254304c--0850b8d0-4f75-429b-a9f6-66dca2e96b49.lovable.app-1779058166428.png" },
+      { name: "twitter:description", content: description },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -108,10 +126,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     scripts: [
       {
         type: "application/ld+json",
-        children: JSON.stringify(orgJsonLd),
+        children: JSON.stringify(orgJsonLd(business)),
       },
     ],
-  }),
+  };
+  },
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
