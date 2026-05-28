@@ -1,19 +1,30 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Instagram, Mail, MapPin, Phone, Clock, Youtube } from "lucide-react";
 import { useSiteBusiness } from "@/lib/use-site-business";
+import { useSiteConfig } from "@/lib/use-site-config";
 
 export function Footer() {
   const business = useSiteBusiness();
+  const site = useSiteConfig();
+  const brandLabel = site.isMichiganJunkCars ? "MICHIGAN" : "WAYNE";
+  const brandAccent = site.isMichiganJunkCars ? "JUNK CARS" : "AUTO";
+  const brandSub = site.isMichiganJunkCars ? "" : "Recyclers LLC";
   return (
     <footer className="mt-20 border-t border-border bg-card/40">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary text-primary-foreground font-display text-xl font-bold">W</div>
+              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary text-primary-foreground font-display text-xl font-bold">
+                {site.isMichiganJunkCars ? "M" : "W"}
+              </div>
               <div className="leading-tight">
-                <div className="font-display font-bold tracking-wide">WAYNE <span className="text-primary">AUTO</span></div>
-                <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Recyclers LLC</div>
+                <div className="font-display font-bold tracking-wide">
+                  {brandLabel} <span className="text-primary">{brandAccent}</span>
+                </div>
+                {brandSub ? (
+                  <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{brandSub}</div>
+                ) : null}
               </div>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
@@ -69,10 +80,10 @@ export function Footer() {
 
         <div className="mt-12 pt-6 border-t border-border">
           <p className="text-xs text-muted-foreground leading-relaxed max-w-5xl">
-            <strong className="text-foreground/80">Wayne Automotive Recyclers LLC</strong> is a licensed Michigan automotive recycling company offering cash for junk cars, scrap car removal, and certified used auto parts. We buy junk cars, damaged cars, wrecked vehicles, non-running cars, and unwanted vehicles across Wayne, Westland, Livonia, Dearborn, Detroit, and all of Metro Detroit. Free towing, instant quotes, and same-day pickup — the easiest way to sell your junk car in Michigan.
+            <strong className="text-foreground/80">{business.name}</strong> is a licensed Michigan automotive recycling company offering cash for junk cars, scrap car removal, and certified used auto parts. We buy junk cars, damaged cars, wrecked vehicles, non-running cars, and unwanted vehicles across Wayne, Westland, Livonia, Dearborn, Detroit, and all of Metro Detroit. Free towing, instant quotes, and same-day pickup — the easiest way to sell your junk car in Michigan.
           </p>
           <div className="mt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-muted-foreground">
-            <span>© {new Date().getFullYear()} Wayne Automotive Recyclers LLC. All rights reserved.</span>
+            <span>© {new Date().getFullYear()} {business.name}. All rights reserved.</span>
             <span>Licensed Michigan Auto Recycler</span>
           </div>
         </div>

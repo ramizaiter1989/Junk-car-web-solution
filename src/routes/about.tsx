@@ -2,19 +2,28 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { CTASection } from "@/components/site/CTASection";
 import yardImg from "@/assets/recycling-yard.jpg";
+import { brandTitle, buildPageHead } from "@/lib/seo";
 import { Recycle, ShieldCheck, Users, Award } from "lucide-react";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "About Wayne Automotive Recyclers LLC | Michigan Auto Recycling Company" },
-      { name: "description", content: "Learn about Wayne Automotive Recyclers LLC — a licensed Michigan auto recycling company buying junk cars and supplying used auto parts since 2009." },
-      { property: "og:title", content: "About Wayne Automotive Recyclers LLC" },
-      { property: "og:description", content: "Michigan&apos;s trusted, licensed automotive recycling company based in Wayne, MI." },
-      { property: "og:url", content: "/about" },
-    ],
-    links: [{ rel: "canonical", href: "/about" }],
-  }),
+  head: ({ match }) => {
+    const { business, site } = match.context;
+    return buildPageHead({
+      path: "/about",
+      title: brandTitle(
+        "About Wayne Automotive Recyclers LLC | Michigan Auto Recycling Company",
+        "About Michigan Junk Cars | Michigan Auto Recycling Company",
+        site,
+      ),
+      description: site.isMichiganJunkCars
+        ? "Learn about Michigan Junk Cars — a licensed Michigan company buying junk cars statewide with free towing and instant cash offers."
+        : "Learn about Wayne Automotive Recyclers LLC — a licensed Michigan auto recycling company buying junk cars and supplying used auto parts since 2009.",
+      business,
+      site,
+      ogTitle: brandTitle("About Wayne Automotive Recyclers LLC", "About Michigan Junk Cars", site),
+      ogDescription: "Michigan's trusted, licensed automotive recycling company.",
+    });
+  },
   component: AboutPage,
 });
 

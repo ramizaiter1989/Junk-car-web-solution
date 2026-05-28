@@ -1,5 +1,6 @@
 import { DOMAIN_PHONES } from "./domains";
 import { normalizeHost } from "./host";
+import { isMichiganJunkCarsHost } from "./site-config";
 
 export type SiteBusiness = {
   name: string;
@@ -77,16 +78,29 @@ function phonesFromDigits(digits: readonly string[]): Pick<
   };
 }
 
+const MICHIGAN_JUNK_CARS_BUSINESS: Partial<SiteBusiness> = {
+  name: "Michigan Junk Cars",
+  shortName: "Michigan Junk Cars",
+  email: "info@michiganjunkcars.com",
+};
+
 export function resolveBusiness(host?: string | null): SiteBusiness {
   if (!host) return DEFAULT_BUSINESS;
 
   const key = host.toLowerCase().split(":")[0] ?? host;
-  const digits =
-    DOMAIN_PHONES[key] ?? DOMAIN_PHONES[normalizeHost(key)];
-  if (!digits?.length) return DEFAULT_BUSINESS;
+  const normalized = normalizeHost(key);
+  const digits = DOMAIN_PHONES[key] ?? DOMAIN_PHONES[normalized];
+  const michigan = isMichiganJunkCarsHost(normalized);
+
+  if (!digits?.length) {
+    return michigan
+      ? { ...DEFAULT_BUSINESS, ...MICHIGAN_JUNK_CARS_BUSINESS }
+      : DEFAULT_BUSINESS;
+  }
 
   return {
     ...DEFAULT_BUSINESS,
+    ...(michigan ? MICHIGAN_JUNK_CARS_BUSINESS : {}),
     ...phonesFromDigits(digits),
   };
 }

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { CTASection } from "@/components/site/CTASection";
+import { brandTitle, buildPageHead } from "@/lib/seo";
 
 const faqs = [
   { q: "How much can I get for my junk car in Michigan?", a: "Most junk cars in Michigan sell between $200 and $5,000 depending on year, make, model, weight, and condition. We pay the highest local rates and offer guaranteed phone quotes in minutes." },
@@ -17,15 +18,23 @@ const faqs = [
 ];
 
 export const Route = createFileRoute("/faq")({
-  head: () => ({
-    meta: [
-      { title: "Junk Car FAQ Michigan | Wayne Automotive Recyclers LLC" },
-      { name: "description", content: "Answers to the most common questions about selling junk cars in Michigan — pricing, towing, titles, pickup speed, and more." },
-      { property: "og:title", content: "Junk Car FAQ — Wayne Automotive Recyclers" },
-      { property: "og:description", content: "Pricing, towing, paperwork, and pickup — all your junk car questions answered." },
-      { property: "og:url", content: "/faq" },
-    ],
-    links: [{ rel: "canonical", href: "/faq" }],
+  head: ({ match }) => {
+    const { business, site } = match.context;
+    return {
+    ...buildPageHead({
+      path: "/faq",
+      title: brandTitle(
+        "Junk Car FAQ Michigan | Wayne Automotive Recyclers LLC",
+        "Junk Car FAQ Michigan | Michigan Junk Cars",
+        site,
+      ),
+      description:
+        "Answers to the most common questions about selling junk cars in Michigan — pricing, towing, titles, pickup speed, and more.",
+      business,
+      site,
+      ogTitle: brandTitle("Junk Car FAQ — Wayne Automotive Recyclers", "Junk Car FAQ — Michigan Junk Cars", site),
+      ogDescription: "Pricing, towing, paperwork, and pickup — all your junk car questions answered.",
+    }),
     scripts: [
       {
         type: "application/ld+json",
@@ -40,7 +49,8 @@ export const Route = createFileRoute("/faq")({
         }),
       },
     ],
-  }),
+  };
+  },
   component: FAQPage,
 });
 

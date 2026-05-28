@@ -3,26 +3,34 @@ import { PageHero } from "@/components/site/PageHero";
 import { CTASection } from "@/components/site/CTASection";
 import partsImg from "@/assets/used-parts.jpg";
 import { callInMeta } from "@/lib/business";
+import { brandTitle, buildPageHead } from "@/lib/seo";
 import { useSiteBusiness } from "@/lib/use-site-business";
 import { CheckCircle2 } from "lucide-react";
 
 export const Route = createFileRoute("/used-auto-parts")({
-  head: ({ match }) => ({
-    meta: [
-      { title: "Used Auto Parts Michigan | Tested & Warrantied | Wayne Auto Recyclers" },
-      {
-        name: "description",
-        content: callInMeta(
-          "Quality used auto parts in Michigan — engines, transmissions, body panels, electronics. Tested, warrantied, and ready to ship. Call 313-500-6233.",
-          match.context.business,
-        ),
-      },
-      { property: "og:title", content: "Used Auto Parts Michigan | Wayne Automotive Recyclers" },
-      { property: "og:description", content: "Save up to 70% vs new with tested used auto parts from Michigan&apos;s trusted recycler." },
-      { property: "og:url", content: "/used-auto-parts" },
-    ],
-    links: [{ rel: "canonical", href: "/used-auto-parts" }],
-  }),
+  head: ({ match }) => {
+    const { business, site } = match.context;
+    return buildPageHead({
+      path: "/used-auto-parts",
+      title: brandTitle(
+        "Used Auto Parts Michigan | Tested & Warrantied | Wayne Auto Recyclers",
+        "Used Auto Parts Michigan | Tested & Warrantied | Michigan Junk Cars",
+        site,
+      ),
+      description: callInMeta(
+        "Quality used auto parts in Michigan — engines, transmissions, body panels, electronics. Tested, warrantied, and ready to ship.",
+        business,
+      ),
+      business,
+      site,
+      ogTitle: brandTitle(
+        "Used Auto Parts Michigan | Wayne Automotive Recyclers",
+        "Used Auto Parts Michigan | Michigan Junk Cars",
+        site,
+      ),
+      ogDescription: "Save up to 70% vs new with tested used auto parts from Michigan's trusted recycler.",
+    });
+  },
   component: PartsPage,
 });
 

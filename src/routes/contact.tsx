@@ -2,26 +2,32 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { QuoteForm } from "@/components/site/QuoteForm";
 import { callInMeta } from "@/lib/business";
+import { brandTitle, buildPageHead } from "@/lib/seo";
 import { useSiteBusiness } from "@/lib/use-site-business";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 
 export const Route = createFileRoute("/contact")({
-  head: ({ match }) => ({
-    meta: [
-      { title: "Contact Wayne Automotive Recyclers LLC | Junk Car Quotes Michigan" },
-      {
-        name: "description",
-        content: callInMeta(
-          "Contact Wayne Automotive Recyclers in Wayne, MI for instant junk car quotes, free towing, and used auto parts. Call 313-500-6233 or 313-286-6491.",
-          match.context.business,
-        ),
-      },
-      { property: "og:title", content: "Contact Wayne Automotive Recyclers" },
-      { property: "og:description", content: "Get an instant cash quote for your junk car or schedule free pickup in Michigan." },
-      { property: "og:url", content: "/contact" },
-    ],
-    links: [{ rel: "canonical", href: "/contact" }],
-  }),
+  head: ({ match }) => {
+    const { business, site } = match.context;
+    return buildPageHead({
+      path: "/contact",
+      title: brandTitle(
+        "Contact Wayne Automotive Recyclers LLC | Junk Car Quotes Michigan",
+        "Contact Michigan Junk Cars | Junk Car Quotes Michigan",
+        site,
+      ),
+      description: callInMeta(
+        site.isMichiganJunkCars
+          ? "Contact Michigan Junk Cars for instant junk car quotes, free towing, and same-day pickup anywhere in Michigan."
+          : "Contact Wayne Automotive Recyclers in Wayne, MI for instant junk car quotes, free towing, and used auto parts. Call 313-500-6233 or 313-286-6491.",
+        business,
+      ),
+      business,
+      site,
+      ogTitle: brandTitle("Contact Wayne Automotive Recyclers", "Contact Michigan Junk Cars", site),
+      ogDescription: "Get an instant cash quote for your junk car or schedule free pickup in Michigan.",
+    });
+  },
   component: ContactPage,
 });
 

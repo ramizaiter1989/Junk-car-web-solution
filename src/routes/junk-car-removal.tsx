@@ -2,25 +2,35 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { CTASection } from "@/components/site/CTASection";
 import { callInMeta } from "@/lib/business";
+import { brandTitle, buildPageHead } from "@/lib/seo";
 import { Truck, Clock, MapPin, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/junk-car-removal")({
-  head: ({ match }) => ({
-    meta: [
-      { title: "Free Junk Car Removal in Wayne MI | Same-Day Pickup | Wayne Auto Recyclers" },
-      {
-        name: "description",
-        content: callInMeta(
-          "Free junk car removal in Wayne, Michigan and all of Metro Detroit. Same-day pickup, no hidden fees, top cash paid on the spot. Call 313-500-6233.",
-          match.context.business,
-        ),
-      },
-      { property: "og:title", content: "Free Junk Car Removal Wayne MI — Same-Day Pickup" },
-      { property: "og:description", content: "We tow your junk car for free and pay you cash on the spot. Serving all of Michigan." },
-      { property: "og:url", content: "/junk-car-removal" },
-    ],
-    links: [{ rel: "canonical", href: "/junk-car-removal" }],
-  }),
+  head: ({ match }) => {
+    const { business, site } = match.context;
+    return buildPageHead({
+      path: "/junk-car-removal",
+      title: brandTitle(
+        "Free Junk Car Removal in Wayne MI | Same-Day Pickup | Wayne Auto Recyclers",
+        "Free Junk Car Removal Michigan | Same-Day Pickup | Michigan Junk Cars",
+        site,
+      ),
+      description: callInMeta(
+        site.isMichiganJunkCars
+          ? "Free junk car removal across Michigan. Same-day pickup, no hidden fees, top cash paid on the spot. Call for your instant offer."
+          : "Free junk car removal in Wayne, Michigan and all of Metro Detroit. Same-day pickup, no hidden fees, top cash paid on the spot. Call 313-500-6233.",
+        business,
+      ),
+      business,
+      site,
+      ogTitle: brandTitle(
+        "Free Junk Car Removal Wayne MI — Same-Day Pickup",
+        "Free Junk Car Removal Michigan — Same-Day Pickup",
+        site,
+      ),
+      ogDescription: "We tow your junk car for free and pay you cash on the spot. Serving all of Michigan.",
+    });
+  },
   component: RemovalPage,
 });
 

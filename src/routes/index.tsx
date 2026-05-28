@@ -7,26 +7,39 @@ import heroImg from "@/assets/hero-tow.jpg";
 import yardImg from "@/assets/recycling-yard.jpg";
 import cashImg from "@/assets/cash-handoff.jpg";
 import { callInMeta } from "@/lib/business";
+import { brandTitle, buildPageHead } from "@/lib/seo";
 import { useSiteBusiness } from "@/lib/use-site-business";
 import { QuoteForm } from "@/components/site/QuoteForm";
 import { CTASection } from "@/components/site/CTASection";
 
 export const Route = createFileRoute("/")({
-  head: ({ match }) => ({
-    meta: [
-      { title: "Cash For Junk Cars in Michigan | Wayne Automotive Recyclers LLC" },
-      {
-        name: "description",
-        content: callInMeta(
-          "Get top cash for your junk car in Michigan. Wayne Automotive Recyclers offers free same-day towing, instant quotes, and trusted auto recycling. Call 313-500-6233.",
-          match.context.business,
-        ),
-      },
-      { property: "og:title", content: "Cash For Junk Cars in Michigan | Wayne Automotive Recyclers" },
-      { property: "og:description", content: "Free towing. Instant offers. Top cash for junk, damaged, and unwanted vehicles across Michigan." },
-      { property: "og:url", content: "/" },
-    ],
-    links: [{ rel: "canonical", href: "/" }],
+  head: ({ match }) => {
+    const { business, site } = match.context;
+    const title = brandTitle(
+      "Cash For Junk Cars in Michigan | Wayne Automotive Recyclers LLC",
+      "Cash For Junk Cars in Michigan | Michigan Junk Cars",
+      site,
+    );
+    return {
+    ...buildPageHead({
+      path: "/",
+      title,
+      description: callInMeta(
+        site.isMichiganJunkCars
+          ? "Get top cash for your junk car in Michigan. Michigan Junk Cars offers free same-day towing, instant guaranteed offers, and trusted recycling statewide. Call today."
+          : "Get top cash for your junk car in Michigan. Wayne Automotive Recyclers offers free same-day towing, instant quotes, and trusted auto recycling. Call 313-500-6233.",
+        business,
+      ),
+      business,
+      site,
+      ogTitle: brandTitle(
+        "Cash For Junk Cars in Michigan | Wayne Automotive Recyclers",
+        "Cash For Junk Cars in Michigan | Michigan Junk Cars",
+        site,
+      ),
+      ogDescription:
+        "Free towing. Instant offers. Top cash for junk, damaged, and unwanted vehicles across Michigan.",
+    }),
     scripts: [
       {
         type: "application/ld+json",
@@ -41,7 +54,8 @@ export const Route = createFileRoute("/")({
         }),
       },
     ],
-  }),
+  };
+  },
   component: HomePage,
 });
 

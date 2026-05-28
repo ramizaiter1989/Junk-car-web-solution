@@ -1,7 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeaders, getRequestHost } from "@tanstack/react-start/server";
 
-import { normalizeHost, resolveBusiness, type SiteBusiness } from "./business";
+import { resolveBusiness, type SiteBusiness } from "./business";
+import { resolveSiteConfig, type SiteConfig } from "./site-config";
 
 function readRequestHost(): string | undefined {
   try {
@@ -19,6 +20,19 @@ function readRequestHost(): string | undefined {
   return raw.split(",")[0]?.trim().split(":")[0];
 }
 
+export type SiteContext = {
+  business: SiteBusiness;
+  site: SiteConfig;
+};
+
 export const getSiteBusiness = createServerFn({ method: "GET" }).handler((): SiteBusiness => {
   return resolveBusiness(readRequestHost());
+});
+
+export const getSiteContext = createServerFn({ method: "GET" }).handler((): SiteContext => {
+  const host = readRequestHost();
+  return {
+    business: resolveBusiness(host),
+    site: resolveSiteConfig(host),
+  };
 });

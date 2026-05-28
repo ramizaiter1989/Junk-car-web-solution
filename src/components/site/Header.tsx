@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, Phone, X } from "lucide-react";
 import { useSiteBusiness } from "@/lib/use-site-business";
+import { useSiteConfig } from "@/lib/use-site-config";
 
 const nav = [
   { to: "/", label: "Home" },
@@ -17,6 +18,7 @@ const nav = [
 
 export function Header() {
   const business = useSiteBusiness();
+  const site = useSiteConfig();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -39,15 +41,25 @@ export function Header() {
         <div className="flex h-16 items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-2 group">
             <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary text-primary-foreground font-display text-xl font-bold shadow-md shadow-primary/30 group-hover:scale-105 transition-transform">
-              W
+              {site.isMichiganJunkCars ? "M" : "W"}
             </div>
             <div className="flex flex-col leading-tight">
               <span className="font-display font-bold text-base sm:text-lg tracking-wide">
-                WAYNE <span className="text-primary">AUTO</span>
+                {site.isMichiganJunkCars ? (
+                  <>
+                    MICHIGAN <span className="text-primary">JUNK CARS</span>
+                  </>
+                ) : (
+                  <>
+                    WAYNE <span className="text-primary">AUTO</span>
+                  </>
+                )}
               </span>
-              <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                Recyclers LLC
-              </span>
+              {!site.isMichiganJunkCars ? (
+                <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                  Recyclers LLC
+                </span>
+              ) : null}
             </div>
           </Link>
 

@@ -12,8 +12,10 @@ import appCss from "../styles.css?url";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { callInMeta, resolveBusiness, type SiteBusiness } from "@/lib/business";
-import { getSiteBusiness } from "@/lib/get-site-business";
+import { getSiteContext } from "@/lib/get-site-business";
+import { resolveSiteConfig, type SiteConfig } from "@/lib/site-config";
 import { useSiteBusiness } from "@/lib/use-site-business";
+import { HiddenPartnerLink } from "@/components/site/HiddenPartnerLink";
 
 function NotFoundComponent() {
   const business = useSiteBusiness();
@@ -87,36 +89,49 @@ function orgJsonLd(business: SiteBusiness) {
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
   business: SiteBusiness;
+  site: SiteConfig;
 }>()({
   beforeLoad: async () => {
     if (typeof window !== "undefined") {
-      return { business: resolveBusiness(window.location.hostname) };
+      const host = window.location.hostname;
+      return {
+        business: resolveBusiness(host),
+        site: resolveSiteConfig(host),
+      };
     }
-    return { business: await getSiteBusiness() };
+    return await getSiteContext();
   },
   head: ({ match }) => {
     const business = match.context.business;
-    const description = callInMeta(
-      "Wayne Automotive Recyclers LLC pays top cash for junk cars in Wayne, Michigan. Free same-day towing, instant quotes, and certified auto recycling. Call 313-500-6233.",
-      business,
-    );
+    const site = match.context.site;
+    const defaultDescription = site.isMichiganJunkCars
+      ? "Michigan Junk Cars pays top cash for junk cars across Michigan. Free same-day towing, instant guaranteed offers, and EPA-compliant recycling. Call for your quote today."
+      : "Wayne Automotive Recyclers LLC pays top cash for junk cars in Wayne, Michigan. Free same-day towing, instant quotes, and certified auto recycling. Call 313-500-6233.";
+    const description = callInMeta(defaultDescription, business);
+    const title = site.isMichiganJunkCars
+      ? "Michigan Junk Cars | Cash For Junk Cars in Michigan"
+      : "Wayne Automotive Recyclers LLC | Cash For Junk Cars in Michigan";
+    const ogImage = site.origin ? `${site.origin}/og-image.jpg` : "/og-image.jpg";
     return {
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "theme-color", content: "#1a1d22" },
-      { title: "Wayne Automotive Recyclers LLC | Cash For Junk Cars in Michigan" },
+      { title },
       { name: "description", content: description },
-      { name: "author", content: "Wayne Automotive Recyclers LLC" },
-      { property: "og:site_name", content: "Wayne Automotive Recyclers LLC" },
+      { name: "author", content: business.name },
+      { property: "og:site_name", content: site.siteName },
       { property: "og:type", content: "website" },
-      { property: "og:title", content: "Wayne Automotive Recyclers LLC | Cash For Junk Cars in Michigan" },
+      { property: "og:title", content: title },
       { property: "og:description", content: description },
+      { property: "og:image", content: ogImage },
+      ...(site.origin ? [{ property: "og:url", content: site.origin }] : []),
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Wayne Automotive Recyclers LLC | Cash For Junk Cars in Michigan" },
+      { name: "twitter:title", content: title },
       { name: "twitter:description", content: description },
     ],
     links: [
+      ...(site.origin ? [{ rel: "canonical", href: site.origin }] : []),
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -144,6 +159,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        <HiddenPartnerLink />
         {children}
         <Scripts />
       </body>

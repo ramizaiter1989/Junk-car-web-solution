@@ -1,20 +1,31 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { CTASection } from "@/components/site/CTASection";
+import { brandTitle, buildPageHead } from "@/lib/seo";
 import { useSiteBusiness } from "@/lib/use-site-business";
 import { MapPin } from "lucide-react";
 
 export const Route = createFileRoute("/areas-we-serve")({
-  head: () => ({
-    meta: [
-      { title: "Areas We Serve | Junk Car Buyers in Michigan | Wayne Auto Recyclers" },
-      { name: "description", content: "Wayne Automotive Recyclers buys junk cars across Wayne County and Metro Detroit — Detroit, Dearborn, Livonia, Westland, Canton, Romulus, Ann Arbor and more." },
-      { property: "og:title", content: "Areas We Serve — Michigan Junk Car Buyers" },
-      { property: "og:description", content: "Free junk car removal across Wayne County and Metro Detroit." },
-      { property: "og:url", content: "/areas-we-serve" },
-    ],
-    links: [{ rel: "canonical", href: "/areas-we-serve" }],
-  }),
+  head: ({ match }) => {
+    const { business, site } = match.context;
+    return buildPageHead({
+      path: "/areas-we-serve",
+      title: brandTitle(
+        "Areas We Serve | Junk Car Buyers in Michigan | Wayne Auto Recyclers",
+        "Areas We Serve | Junk Car Buyers in Michigan | Michigan Junk Cars",
+        site,
+      ),
+      description: site.isMichiganJunkCars
+        ? "Michigan Junk Cars buys vehicles statewide — Detroit, Wayne County, Ann Arbor, Lansing, Grand Rapids, Flint, and surrounding communities."
+        : "Wayne Automotive Recyclers buys junk cars across Wayne County and Metro Detroit — Detroit, Dearborn, Livonia, Westland, Canton, Romulus, Ann Arbor and more.",
+      business,
+      site,
+      ogTitle: "Areas We Serve — Michigan Junk Car Buyers",
+      ogDescription: site.isMichiganJunkCars
+        ? "Free junk car removal across Michigan."
+        : "Free junk car removal across Wayne County and Metro Detroit.",
+    });
+  },
   component: AreasPage,
 });
 
