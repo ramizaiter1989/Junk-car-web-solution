@@ -7,7 +7,7 @@ export type InstantCashOfferPayload = {
   zip_code: string;
   condition_notes: string | null;
   source_url: string | null;
-  photo: File;
+  photo: File | null;
 };
 
 export type InstantCashOfferSuccess = {
@@ -58,7 +58,7 @@ export function instantCashOfferErrorMessage(err: unknown): string {
 
 export function validateOfferPhoto(file: File | null | undefined): string | null {
   if (!file || file.size === 0) {
-    return "Please upload a photo of your vehicle.";
+    return null;
   }
   if (!file.type.startsWith("image/")) {
     return "Photo must be a JPG, PNG, or WebP image.";
@@ -94,7 +94,9 @@ export async function postInstantCashOffer(
     payload.source_url ??
       (typeof window !== "undefined" ? window.location.href : ""),
   );
-  formData.append("photo", payload.photo, payload.photo.name);
+  if (payload.photo) {
+    formData.append("photo", payload.photo, payload.photo.name);
+  }
 
   const res = await fetch(url, {
     method: "POST",

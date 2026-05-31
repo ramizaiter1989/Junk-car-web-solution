@@ -102,7 +102,7 @@ export function QuotePopup() {
                   Get your guaranteed quote
                 </SheetTitle>
                 <SheetDescription className="text-sm text-muted-foreground">
-                  Takes 30 seconds. We&apos;ll call you within 15 minutes with top cash for your
+                  Takes 60 seconds. We&apos;ll call you within 15 minutes with top cash for your
                   vehicle.
                 </SheetDescription>
               </SheetHeader>

@@ -2,7 +2,7 @@ import { useEffect, useState, type CSSProperties } from "react";
 import { Timer } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export const QUOTE_COUNTDOWN_SECONDS = 30;
+export const QUOTE_COUNTDOWN_SECONDS = 60;
 
 function formatTime(totalSeconds: number) {
   const minutes = Math.floor(totalSeconds / 60);

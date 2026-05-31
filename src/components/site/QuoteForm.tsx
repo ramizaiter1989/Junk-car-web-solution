@@ -239,7 +239,7 @@ export function QuoteForm({
         valid = (value as string).trim().length > 0;
         break;
       case "photo":
-        valid = validateOfferPhoto(value as File | null) === null;
+        valid = !!value && validateOfferPhoto(value as File | null) === null;
         break;
     }
 
@@ -330,8 +330,8 @@ export function QuoteForm({
     }
 
     const photoError = validateOfferPhoto(photo);
-    if (photoError || !photo) {
-      setError(photoError ?? "Please upload a photo of your vehicle.");
+    if (photoError) {
+      setError(photoError);
       return;
     }
 
@@ -445,7 +445,7 @@ export function QuoteForm({
                   id={`zip-${uid}`}
                   name="zip_code"
                   maxLength={16}
-                  placeholder="48201"
+                  placeholder="e.g. 48174, 48201, 48150"
                   inputMode="numeric"
                   className={checkedInputClass(fieldValid.zip_code)}
                   onChange={fieldChangeHandler("zip_code")}
@@ -461,7 +461,7 @@ export function QuoteForm({
                 id={`make-${uid}`}
                 name="make"
                 maxLength={100}
-                placeholder="Ford"
+                placeholder="e.g. Toyota, Chevy, Ford"
                 className={checkedInputClass(fieldValid.make)}
                 onChange={fieldChangeHandler("make")}
                 onBlur={fieldBlurHandler("make")}
@@ -475,7 +475,7 @@ export function QuoteForm({
                 id={`model-${uid}`}
                 name="model"
                 maxLength={100}
-                placeholder="Fusion"
+                placeholder="e.g. Camry, Silverado, Fusion"
                 className={checkedInputClass(fieldValid.model)}
                 onChange={fieldChangeHandler("model")}
                 onBlur={fieldBlurHandler("model")}
@@ -488,7 +488,7 @@ export function QuoteForm({
                 id={`notes-${uid}`}
                 name="condition_notes"
                 maxLength={5000}
-                placeholder="Runs but needs transmission..."
+                placeholder="e.g. Runs, converter exists, or all parts exist"
                 rows={3}
                 className={cn(checkedInputClass(fieldValid.condition_notes), "min-h-[88px] py-3")}
                 onChange={fieldChangeHandler("condition_notes")}
@@ -535,7 +535,7 @@ export function QuoteForm({
           required
           name="make"
           maxLength={100}
-          placeholder="Make (e.g. Ford)"
+          placeholder="Make (e.g. Toyota, Chevy, Ford)"
           className={checkedInputClass(fieldValid.make)}
           onChange={fieldChangeHandler("make")}
           onBlur={fieldBlurHandler("make")}
@@ -546,7 +546,7 @@ export function QuoteForm({
           required
           name="model"
           maxLength={100}
-          placeholder="Model"
+          placeholder="Model (e.g. Camry, Silverado, Fusion)"
           className={cn(checkedInputClass(fieldValid.model), spanClass)}
           onChange={fieldChangeHandler("model")}
           onBlur={fieldBlurHandler("model")}
@@ -557,7 +557,7 @@ export function QuoteForm({
           required
           name="zip_code"
           maxLength={16}
-          placeholder="ZIP code"
+          placeholder="ZIP code (e.g. 48174, 48201, 48150)"
           className={cn(checkedInputClass(fieldValid.zip_code), spanClass)}
           onChange={fieldChangeHandler("zip_code")}
           onBlur={fieldBlurHandler("zip_code")}
@@ -567,7 +567,7 @@ export function QuoteForm({
         <textarea
           name="condition_notes"
           maxLength={5000}
-          placeholder="Condition / notes (optional)"
+          placeholder="Condition / notes (e.g. runs, converter exists, or all parts exist)"
           rows={3}
           className={cn(checkedInputClass(fieldValid.condition_notes), spanClass, "min-h-[88px] py-3")}
           onChange={fieldChangeHandler("condition_notes")}
@@ -589,7 +589,7 @@ export function QuoteForm({
           <p className={cn(sectionTitleClass, "w-full justify-between")}>
             <span className="flex items-center gap-2">
               <SectionAccent />
-              Vehicle photo
+              Vehicle photo (optional)
             </span>
             <FieldCompleteCheck
               show={fieldValid.photo}
@@ -607,10 +607,10 @@ export function QuoteForm({
               fieldValid.photo && "border-emerald-500/45",
             )}
           >
-          <Camera className="h-5 w-5 shrink-0 text-primary" />
-          <span className="text-center">
-            {photo ? "Tap to change photo" : "Tap to upload vehicle photo"}
-          </span>
+            <Camera className="h-5 w-5 shrink-0 text-primary" />
+            <span className="text-center">
+              {photo ? "Tap to change photo" : "Tap to upload vehicle photo (optional)"}
+            </span>
           </label>
         </ValidatedField>
         <input
@@ -619,7 +619,6 @@ export function QuoteForm({
           type="file"
           name="photo"
           accept={OFFER_PHOTO_ACCEPT}
-          required
           className="sr-only"
           onChange={onPhotoChange}
         />
@@ -649,7 +648,7 @@ export function QuoteForm({
           </div>
         ) : (
           <p className="text-[11px] text-muted-foreground">
-            JPG, PNG, or WebP — max 10 MB. Required for your cash offer.
+            JPG, PNG, or WebP — max 10 MB. Optional — helps us quote faster.
           </p>
         )}
       </div>
