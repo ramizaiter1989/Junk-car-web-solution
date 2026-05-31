@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
-import { QuoteForm } from "@/components/site/QuoteForm";
+import { OpenQuoteButton } from "@/components/site/OpenQuoteButton";
 import { callInMeta } from "@/lib/business";
 import { brandTitle, buildPageHead } from "@/lib/seo";
 import { useSiteBusiness } from "@/lib/use-site-business";
@@ -70,8 +70,8 @@ function ContactPage() {
 
           <div className="rounded-2xl border border-border bg-card p-6 shadow-2xl shadow-black/30">
             <h3 className="font-display text-2xl font-bold">Request your free quote</h3>
-            <p className="text-sm text-muted-foreground mt-1 mb-5">We&apos;ll call you back within 15 minutes with a guaranteed cash offer.</p>
-            <QuoteForm />
+            <p className="text-sm text-muted-foreground mt-1 mb-5">30 seconds. Guaranteed price.</p>
+            <OpenQuoteButton size="lg" />
           </div>
         </div>
 

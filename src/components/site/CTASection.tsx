@@ -1,6 +1,6 @@
 import { Phone, ArrowRight } from "lucide-react";
-import { Link } from "@tanstack/react-router";
 import { useSiteBusiness } from "@/lib/use-site-business";
+import { OpenQuoteButton } from "@/components/site/OpenQuoteButton";
 
 export function CTASection({
   title = "Ready to turn that junk car into cash?",
@@ -20,9 +20,9 @@ export function CTASection({
             <a href={business.primaryPhoneHref} className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3.5 text-sm font-bold uppercase tracking-wider text-primary-foreground shadow-lg shadow-primary/30 hover:scale-[1.02] transition-transform">
               <Phone className="h-4 w-4" /> Call {business.primaryPhone}
             </a>
-            <Link to="/contact" className="inline-flex items-center gap-2 rounded-md border border-border bg-secondary/60 px-6 py-3.5 text-sm font-bold uppercase tracking-wider hover:bg-secondary">
+            <OpenQuoteButton className="inline-flex items-center gap-2 rounded-md border border-border bg-secondary/60 px-6 py-3.5 text-sm font-bold uppercase tracking-wider hover:bg-secondary shadow-none">
               Get Instant Quote <ArrowRight className="h-4 w-4" />
-            </Link>
+            </OpenQuoteButton>
           </div>
         </div>
       </div>

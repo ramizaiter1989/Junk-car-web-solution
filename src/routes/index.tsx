@@ -9,7 +9,8 @@ import cashImg from "@/assets/cash-handoff.jpg";
 import { callInMeta } from "@/lib/business";
 import { brandTitle, buildPageHead } from "@/lib/seo";
 import { useSiteBusiness } from "@/lib/use-site-business";
-import { QuoteForm } from "@/components/site/QuoteForm";
+import { OpenQuoteButton } from "@/components/site/OpenQuoteButton";
+import { useQuotePopup } from "@/components/site/QuotePopupContext";
 import { CTASection } from "@/components/site/CTASection";
 
 export const Route = createFileRoute("/")({
@@ -61,6 +62,7 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   const business = useSiteBusiness();
+  const { openQuotePopup } = useQuotePopup();
   return (
     <>
       {/* HERO */}
@@ -88,16 +90,20 @@ function HomePage() {
               </h1>
               <p className="mt-5 max-w-xl text-lg text-muted-foreground">
                 Get a guaranteed instant cash offer for your junk, damaged, or unwanted vehicle.
-                <strong className="text-foreground"> Free same-day towing</strong> across Wayne, Detroit, and all of Metro Michigan.
+                <strong className="text-foreground"> Free same-day towing</strong> across Wayne, metro Detroit, and all of Michigan.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
                 <a href={business.primaryPhoneHref} className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-4 text-sm font-bold uppercase tracking-wider text-primary-foreground shadow-xl shadow-primary/30 hover:scale-[1.02] transition-transform">
                   <Phone className="h-4 w-4" /> Call Now • {business.primaryPhone}
                 </a>
-                <a href="#quote" className="inline-flex items-center gap-2 rounded-md border border-border bg-background/60 backdrop-blur px-6 py-4 text-sm font-bold uppercase tracking-wider hover:bg-secondary">
+                <button
+                  type="button"
+                  onClick={(event) => openQuotePopup(event.currentTarget)}
+                  className="inline-flex items-center gap-2 rounded-md border border-border bg-background/60 backdrop-blur px-6 py-4 text-sm font-bold uppercase tracking-wider hover:bg-secondary"
+                >
                   Get Instant Quote <ArrowRight className="h-4 w-4" />
-                </a>
+                </button>
               </div>
 
               <dl className="mt-10 grid grid-cols-3 gap-4 max-w-md">
@@ -120,8 +126,21 @@ function HomePage() {
                   <DollarSign className="h-4 w-4" /> Instant Cash Offer
                 </div>
                 <h2 className="font-display text-2xl font-bold">Get your guaranteed quote</h2>
-                <p className="text-sm text-muted-foreground mt-1 mb-5">Takes 30 seconds. Reply within 15 minutes.</p>
-                <QuoteForm />
+                <p className="text-sm text-muted-foreground mt-1 mb-6">
+                  Takes 30 seconds. Reply within 15 minutes. Upload a photo for the fastest offer.
+                </p>
+                <ul className="mb-6 space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" /> Free same-day towing
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" /> Cash on the spot
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" /> No title? We can help
+                  </li>
+                </ul>
+                <OpenQuoteButton size="lg" />
               </div>
             </div>
           </div>

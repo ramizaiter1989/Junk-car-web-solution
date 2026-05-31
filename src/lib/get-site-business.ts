@@ -12,12 +12,16 @@ function readRequestHost(): string | undefined {
     // fall through to headers
   }
 
-  const headers = getRequestHeaders();
-  const raw =
-    headers.get("x-forwarded-host") ?? headers.get("host") ?? headers.get(":authority");
-  if (!raw) return undefined;
+  try {
+    const headers = getRequestHeaders();
+    const raw =
+      headers.get("x-forwarded-host") ?? headers.get("host") ?? headers.get(":authority");
+    if (!raw) return undefined;
 
-  return raw.split(",")[0]?.trim().split(":")[0];
+    return raw.split(",")[0]?.trim().split(":")[0];
+  } catch {
+    return undefined;
+  }
 }
 
 export type SiteContext = {

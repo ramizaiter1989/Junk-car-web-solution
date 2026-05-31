@@ -16,6 +16,8 @@ import { getSiteContext } from "@/lib/get-site-business";
 import { resolveSiteConfig, type SiteConfig } from "@/lib/site-config";
 import { useSiteBusiness } from "@/lib/use-site-business";
 import { HiddenPartnerLink } from "@/components/site/HiddenPartnerLink";
+import { QuotePopup } from "@/components/site/QuotePopup";
+import { QuotePopupProvider } from "@/components/site/QuotePopupContext";
 
 function NotFoundComponent() {
   const business = useSiteBusiness();
@@ -171,13 +173,16 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex min-h-screen flex-col">
-        <Header />
-        <main className="flex-1">
-          <Outlet />
-        </main>
-        <Footer />
-      </div>
+      <QuotePopupProvider>
+        <div className="flex min-h-screen flex-col">
+          <Header />
+          <main className="flex-1">
+            <Outlet />
+          </main>
+          <Footer />
+        </div>
+        <QuotePopup />
+      </QuotePopupProvider>
     </QueryClientProvider>
   );
 }

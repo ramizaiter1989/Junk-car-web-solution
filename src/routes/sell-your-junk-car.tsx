@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
-import { QuoteForm } from "@/components/site/QuoteForm";
+import { OpenQuoteButton } from "@/components/site/OpenQuoteButton";
 import { CTASection } from "@/components/site/CTASection";
 import { callInMeta } from "@/lib/business";
 import { brandTitle, buildPageHead } from "@/lib/seo";
@@ -76,7 +76,7 @@ function SellPage() {
             <div className="lg:sticky top-24 rounded-2xl border border-border bg-card p-6 shadow-2xl shadow-black/30">
               <h3 className="font-display text-2xl font-bold">Get my offer</h3>
               <p className="text-sm text-muted-foreground mt-1 mb-5">30 seconds. Guaranteed price.</p>
-              <QuoteForm />
+              <OpenQuoteButton size="lg" />
             </div>
           </aside>
         </div>
