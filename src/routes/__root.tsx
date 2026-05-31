@@ -18,6 +18,8 @@ import { useSiteBusiness } from "@/lib/use-site-business";
 import { HiddenPartnerLink } from "@/components/site/HiddenPartnerLink";
 import { QuotePopup } from "@/components/site/QuotePopup";
 import { QuotePopupProvider } from "@/components/site/QuotePopupContext";
+import { CookieConsent } from "@/components/site/CookieConsent";
+import { buildConsentModeInitScript } from "@/lib/google-consent";
 
 const GA_MEASUREMENT_ID = "G-JWK882Q31Z";
 const GTM_CONTAINER_ID = "GTM-N48HKMF5";
@@ -145,6 +147,9 @@ export const Route = createRootRouteWithContext<{
     ],
     scripts: [
       {
+        children: buildConsentModeInitScript(),
+      },
+      {
         children: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -157,8 +162,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       },
       {
         children: `
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           gtag('config', '${GA_MEASUREMENT_ID}');
         `.trim(),
@@ -213,6 +216,7 @@ function RootComponent() {
           <Footer />
         </div>
         <QuotePopup />
+        <CookieConsent />
       </QuotePopupProvider>
     </QueryClientProvider>
   );
