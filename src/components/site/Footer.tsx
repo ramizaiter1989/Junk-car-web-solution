@@ -84,7 +84,7 @@ export function Footer() {
           </p>
           <div className="mt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-muted-foreground">
             <span>© {new Date().getFullYear()} {business.name}. All rights reserved.</span>
-            <span>Licensed Michigan Auto Recycler</span>
+            <span>Licensed Michigan Auto Recycler.</span>
           </div>
         </div>
       </div>
