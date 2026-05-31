@@ -19,6 +19,8 @@ import { HiddenPartnerLink } from "@/components/site/HiddenPartnerLink";
 import { QuotePopup } from "@/components/site/QuotePopup";
 import { QuotePopupProvider } from "@/components/site/QuotePopupContext";
 
+const GA_MEASUREMENT_ID = "G-JWK882Q31Z";
+
 function NotFoundComponent() {
   const business = useSiteBusiness();
   return (
@@ -141,6 +143,18 @@ export const Route = createRootRouteWithContext<{
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" },
     ],
     scripts: [
+      {
+        src: `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`,
+        async: true,
+      },
+      {
+        children: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${GA_MEASUREMENT_ID}');
+        `.trim(),
+      },
       {
         type: "application/ld+json",
         children: JSON.stringify(orgJsonLd(business)),
