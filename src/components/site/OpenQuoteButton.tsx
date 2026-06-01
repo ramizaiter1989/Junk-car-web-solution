@@ -6,12 +6,15 @@ type OpenQuoteButtonProps = {
   className?: string;
   size?: "default" | "lg" | "fab";
   children?: React.ReactNode;
+  /** Custom label for track-click API (Telegram). */
+  trackLabel?: string;
 };
 
 export function OpenQuoteButton({
   className,
   size = "default",
   children,
+  trackLabel,
 }: OpenQuoteButtonProps) {
   const { openQuotePopup } = useQuotePopup();
 
@@ -19,6 +22,8 @@ export function OpenQuoteButton({
     return (
       <button
         type="button"
+        data-track="FAB — Get Cash Offer"
+        data-track-cta="true"
         onClick={(event) => openQuotePopup(event.currentTarget)}
         className={cn(
           "fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-primary px-5 py-3.5 text-sm font-bold text-primary-foreground transition-transform hover:scale-[1.03] active:scale-[0.98] md:bottom-6 md:right-6",
@@ -35,6 +40,11 @@ export function OpenQuoteButton({
   return (
     <button
       type="button"
+      data-track={
+        trackLabel ??
+        (typeof children === "string" ? children : "Get My Instant Cash Offer")
+      }
+      data-track-cta="true"
       onClick={(event) => openQuotePopup(event.currentTarget)}
       className={cn(
         size === "lg"

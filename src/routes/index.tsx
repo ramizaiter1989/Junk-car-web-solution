@@ -11,7 +11,9 @@ import { brandTitle, buildPageHead } from "@/lib/seo";
 import { useSiteBusiness } from "@/lib/use-site-business";
 import { OpenQuoteButton } from "@/components/site/OpenQuoteButton";
 import { useQuotePopup } from "@/components/site/QuotePopupContext";
+import { trackCallAttrs, trackQuoteAttrs } from "@/lib/website-tracking";
 import { CTASection } from "@/components/site/CTASection";
+import { HeroCashRibbon, HeroHighlights } from "@/components/site/HeroHighlights";
 
 export const Route = createFileRoute("/")({
   head: ({ match }) => {
@@ -88,17 +90,25 @@ function HomePage() {
                 Cash For Junk Cars{" "}
                 <span className="text-gradient-orange">in Michigan</span>
               </h1>
+
+              <HeroHighlights className="mt-6" />
+
               <p className="mt-5 max-w-xl text-lg text-muted-foreground">
                 Get a guaranteed instant cash offer for your junk, damaged, or unwanted vehicle.
                 <strong className="text-foreground"> Free same-day towing</strong> across Wayne, metro Detroit, and all of Michigan.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
-                <a href={business.primaryPhoneHref} className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-4 text-sm font-bold uppercase tracking-wider text-primary-foreground shadow-xl shadow-primary/30 hover:scale-[1.02] transition-transform">
+                <a
+                  href={business.primaryPhoneHref}
+                  {...trackCallAttrs("Hero", business.primaryPhone)}
+                  className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-4 text-sm font-bold uppercase tracking-wider text-primary-foreground shadow-xl shadow-primary/30 hover:scale-[1.02] transition-transform"
+                >
                   <Phone className="h-4 w-4" /> Call Now • {business.primaryPhone}
                 </a>
                 <button
                   type="button"
+                  {...trackQuoteAttrs("Hero")}
                   onClick={(event) => openQuotePopup(event.currentTarget)}
                   className="inline-flex items-center gap-2 rounded-md border border-border bg-background/60 backdrop-blur px-6 py-4 text-sm font-bold uppercase tracking-wider hover:bg-secondary"
                 >
@@ -121,6 +131,7 @@ function HomePage() {
             </div>
 
             <div id="quote" className="relative">
+              <HeroCashRibbon />
               <div className="rounded-2xl border border-border bg-card/90 backdrop-blur-xl p-6 shadow-2xl shadow-black/40">
                 <div className="flex items-center gap-2 mb-2 text-primary text-xs font-bold uppercase tracking-widest">
                   <DollarSign className="h-4 w-4" /> Instant Cash Offer
@@ -140,7 +151,7 @@ function HomePage() {
                     <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" /> No title? We can help
                   </li>
                 </ul>
-                <OpenQuoteButton size="lg" />
+                <OpenQuoteButton size="lg" trackLabel="Get Quote — Home form card" />
               </div>
             </div>
           </div>
@@ -369,16 +380,32 @@ function HomePage() {
               <li className="flex gap-3"><MapPin className="h-5 w-5 text-primary shrink-0" /><span>{business.address.full}</span></li>
               <li className="flex gap-3"><Phone className="h-5 w-5 text-primary shrink-0" />
                 <span>
-                  <a href={business.primaryPhoneHref} className="block hover:text-primary font-semibold">{business.phones[0]}</a>
+                  <a
+                    href={business.primaryPhoneHref}
+                    {...trackCallAttrs("Location section", business.phones[0]!)}
+                    className="block hover:text-primary font-semibold"
+                  >
+                    {business.phones[0]}
+                  </a>
                   {business.secondaryPhoneHref && business.phones[1] ? (
-                    <a href={business.secondaryPhoneHref} className="block hover:text-primary font-semibold">{business.phones[1]}</a>
+                    <a
+                      href={business.secondaryPhoneHref}
+                      {...trackCallAttrs("Location section (alt)", business.phones[1])}
+                      className="block hover:text-primary font-semibold"
+                    >
+                      {business.phones[1]}
+                    </a>
                   ) : null}
                 </span>
               </li>
               <li className="flex gap-3"><Clock className="h-5 w-5 text-primary shrink-0" /><span>{business.hours}</span></li>
             </ul>
             <div className="mt-6 flex flex-wrap gap-3">
-              <a href={business.primaryPhoneHref} className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-bold uppercase tracking-wider text-primary-foreground hover:bg-primary/90">
+              <a
+                href={business.primaryPhoneHref}
+                {...trackCallAttrs("Location section CTA", business.primaryPhone)}
+                className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-bold uppercase tracking-wider text-primary-foreground hover:bg-primary/90"
+              >
                 <Phone className="h-4 w-4" /> Call Now
               </a>
               <Link to="/contact" className="inline-flex items-center gap-2 rounded-md border border-border bg-secondary/60 px-5 py-3 text-sm font-bold uppercase tracking-wider hover:bg-secondary">

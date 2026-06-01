@@ -174,6 +174,33 @@
   .quote-success-wiggle-delay {
     animation-delay: 0.2s;
   }
+
+  .hero-cash-badge {
+    animation: hero-cash-bounce 2s ease-in-out infinite;
+  }
+
+  .hero-cash-shimmer {
+    background: linear-gradient(
+      105deg,
+      transparent 35%,
+      oklch(1 0 0 / 0.12) 50%,
+      transparent 65%
+    );
+    animation: hero-cash-shimmer 3.5s ease-in-out infinite;
+  }
+
+  .hero-cash-ribbon {
+    animation: hero-cash-float 3.5s ease-in-out infinite;
+    animation-delay: 0.6s;
+  }
+
+  .hero-trust-badge {
+    animation: hero-trust-in 0.55s ease-out both;
+  }
+  .hero-trust-badge:nth-child(1) { animation-delay: 0.05s; }
+  .hero-trust-badge:nth-child(2) { animation-delay: 0.12s; }
+  .hero-trust-badge:nth-child(3) { animation-delay: 0.19s; }
+  .hero-trust-badge:nth-child(4) { animation-delay: 0.26s; }
 }
 
 @keyframes quote-countdown-shrink {
@@ -215,5 +242,55 @@
   }
   50% {
     transform: rotate(8deg) scale(1.08);
+  }
+}
+
+@keyframes hero-cash-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-12px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  65% {
+    transform: translateY(-6px);
+  }
+  80% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-cash-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes hero-cash-shimmer {
+  0%,
+  100% {
+    transform: translateX(-120%);
+  }
+  50% {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes hero-trust-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

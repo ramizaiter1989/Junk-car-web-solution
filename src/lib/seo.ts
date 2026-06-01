@@ -1,6 +1,7 @@
 import type { SiteBusiness } from "./business";
 import { callInMeta } from "./business";
 import type { SiteConfig } from "./site-config";
+import { absoluteSiteAsset, siteOgImagePath } from "./site-branding";
 import { canonicalHref } from "./site-config";
 
 type PageHeadInput = {
@@ -30,6 +31,7 @@ export function buildPageHead({
   const canonical = canonicalHref(path, site);
   const resolvedOgTitle = ogTitle ?? title;
   const resolvedOgDescription = ogDescription ?? metaDescription;
+  const ogImage = absoluteSiteAsset(siteOgImagePath(site), site);
 
   return {
     meta: [
@@ -38,9 +40,16 @@ export function buildPageHead({
       { property: "og:title", content: resolvedOgTitle },
       { property: "og:description", content: resolvedOgDescription },
       { property: "og:url", content: canonical },
-      ...(site.origin
-        ? [{ property: "og:image", content: `${site.origin}/og-image.jpg` }]
-        : []),
+      { property: "og:image", content: ogImage },
+      { property: "og:image:type", content: "image/png" },
+      {
+        property: "og:image:alt",
+        content: site.isMichiganJunkCars
+          ? "Michigan Junk Cars — cash for junk cars in Michigan"
+          : resolvedOgTitle,
+      },
+      { name: "twitter:card", content: site.isMichiganJunkCars ? "summary" : "summary_large_image" },
+      { name: "twitter:image", content: ogImage },
     ],
     links: [{ rel: "canonical", href: canonical }],
   };

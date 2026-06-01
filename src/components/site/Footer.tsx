@@ -2,6 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { Facebook, Instagram, Mail, MapPin, Phone, Clock, Youtube } from "lucide-react";
 import { useSiteBusiness } from "@/lib/use-site-business";
 import { useSiteConfig } from "@/lib/use-site-config";
+import { trackCallAttrs } from "@/lib/website-tracking";
+import { SiteLogo } from "@/components/site/SiteLogo";
 
 export function Footer() {
   const business = useSiteBusiness();
@@ -15,9 +17,7 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary text-primary-foreground font-display text-xl font-bold">
-                {site.isMichiganJunkCars ? "M" : "W"}
-              </div>
+              <SiteLogo />
               <div className="leading-tight">
                 <div className="font-display font-bold tracking-wide">
                   {brandLabel} <span className="text-primary">{brandAccent}</span>
@@ -66,9 +66,21 @@ export function Footer() {
               <li className="flex gap-2"><MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" /><span>{business.address.full}</span></li>
               <li className="flex gap-2"><Phone className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                 <span>
-                  <a href={business.primaryPhoneHref} className="block hover:text-primary">{business.phones[0]}</a>
+                  <a
+                    href={business.primaryPhoneHref}
+                    {...trackCallAttrs("Footer", business.phones[0]!)}
+                    className="block hover:text-primary"
+                  >
+                    {business.phones[0]}
+                  </a>
                   {business.secondaryPhoneHref && business.phones[1] ? (
-                    <a href={business.secondaryPhoneHref} className="block hover:text-primary">{business.phones[1]}</a>
+                    <a
+                      href={business.secondaryPhoneHref}
+                      {...trackCallAttrs("Footer (alt)", business.phones[1])}
+                      className="block hover:text-primary"
+                    >
+                      {business.phones[1]}
+                    </a>
                   ) : null}
                 </span>
               </li>

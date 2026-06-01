@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { OpenQuoteButton } from "@/components/site/OpenQuoteButton";
+import { trackCallAttrs } from "@/lib/website-tracking";
 import { callInMeta } from "@/lib/business";
 import { brandTitle, buildPageHead } from "@/lib/seo";
 import { useSiteBusiness } from "@/lib/use-site-business";
@@ -45,7 +46,11 @@ function ContactPage() {
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid gap-10 lg:grid-cols-[1fr_1fr]">
           <div className="space-y-6">
-            <a href={business.primaryPhoneHref} className="block rounded-xl border border-border bg-card p-6 hover:border-primary/60 transition-colors">
+            <a
+              href={business.primaryPhoneHref}
+              {...trackCallAttrs("Contact page", business.phones[0]!)}
+              className="block rounded-xl border border-border bg-card p-6 hover:border-primary/60 transition-colors"
+            >
               <Phone className="h-7 w-7 text-primary" />
               <h3 className="mt-3 font-display text-xl font-bold">Call us anytime</h3>
               <p className="mt-1 text-muted-foreground">{business.phones[0]}</p>
@@ -71,7 +76,7 @@ function ContactPage() {
           <div className="rounded-2xl border border-border bg-card p-6 shadow-2xl shadow-black/30">
             <h3 className="font-display text-2xl font-bold">Request your free quote</h3>
             <p className="text-sm text-muted-foreground mt-1 mb-5">30 seconds. Guaranteed price.</p>
-            <OpenQuoteButton size="lg" />
+            <OpenQuoteButton size="lg" trackLabel="Get Quote — Contact page" />
           </div>
         </div>
 

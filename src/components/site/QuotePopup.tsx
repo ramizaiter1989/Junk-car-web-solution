@@ -11,7 +11,6 @@ import {
 import { QuoteForm } from "./QuoteForm";
 import { QuoteOfferCountdown } from "./QuoteOfferCountdown";
 import { OpenQuoteButton } from "./OpenQuoteButton";
-import { readStoredConsentChoice } from "@/lib/google-consent";
 import {
   focusQuoteDrawerForm,
   quotePopupTriggerRef,
@@ -23,24 +22,6 @@ export function QuotePopup() {
   const { open, setQuotePopupOpen, closeQuotePopup } = useQuotePopup();
   const formContainerRef = useRef<HTMLDivElement>(null);
   const [countdownKey, setCountdownKey] = useState(0);
-
-  useEffect(() => {
-    function openOnLoad() {
-      // Only auto-open the quote form if the user has already
-      // made a cookie consent choice (accept or reject).
-      if (readStoredConsentChoice() !== null) {
-        setQuotePopupOpen(true);
-      }
-    }
-
-    if (document.readyState === "complete") {
-      openOnLoad();
-      return;
-    }
-
-    window.addEventListener("load", openOnLoad, { once: true });
-    return () => window.removeEventListener("load", openOnLoad);
-  }, [setQuotePopupOpen]);
 
   useEffect(() => {
     if (!open) return;

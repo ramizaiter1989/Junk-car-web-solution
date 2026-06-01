@@ -19,7 +19,16 @@ import { HiddenPartnerLink } from "@/components/site/HiddenPartnerLink";
 import { QuotePopup } from "@/components/site/QuotePopup";
 import { QuotePopupProvider } from "@/components/site/QuotePopupContext";
 import { CookieConsent } from "@/components/site/CookieConsent";
+import { WebsiteTracker } from "@/components/site/WebsiteTracker";
 import { buildConsentModeInitScript } from "@/lib/google-consent";
+import {
+  absoluteSiteAsset,
+  siteIconLinks,
+  siteLogoPath,
+  siteOgImagePath,
+  siteShareMeta,
+} from "@/lib/site-branding";
+import { trackCallAttrs } from "@/lib/website-tracking";
 
 const GA_MEASUREMENT_ID = "G-JWK882Q31Z";
 const GTM_CONTAINER_ID = "GTM-N48HKMF5";
@@ -38,7 +47,11 @@ function NotFoundComponent() {
           <Link to="/" className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-bold text-primary-foreground hover:bg-primary/90">
             Go home
           </Link>
-          <a href={business.primaryPhoneHref} className="inline-flex items-center justify-center rounded-md border border-border px-4 py-2 text-sm font-semibold hover:bg-secondary">
+          <a
+            href={business.primaryPhoneHref}
+            {...trackCallAttrs("404 page", business.primaryPhone)}
+            className="inline-flex items-center justify-center rounded-md border border-border px-4 py-2 text-sm font-semibold hover:bg-secondary"
+          >
             Call {business.primaryPhone}
           </a>
         </div>
@@ -69,12 +82,18 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-function orgJsonLd(business: SiteBusiness) {
+function orgJsonLd(business: SiteBusiness, site: SiteConfig) {
+  const logoPath = siteLogoPath(site);
+  const imagePath = siteOgImagePath(site);
+  const logo = logoPath ? absoluteSiteAsset(logoPath, site) : undefined;
+  const image = absoluteSiteAsset(imagePath, site);
+
   return {
     "@context": "https://schema.org",
     "@type": "AutomotiveBusiness",
     name: business.name,
-    image: "/og-image.jpg",
+    image,
+    ...(logo ? { logo } : {}),
     telephone: business.phones[0],
     email: business.email,
     address: {
@@ -118,12 +137,12 @@ export const Route = createRootRouteWithContext<{
     const title = site.isMichiganJunkCars
       ? "Michigan Junk Cars | Cash For Junk Cars in Michigan"
       : "Wayne Automotive Recyclers LLC | Cash For Junk Cars in Michigan";
-    const ogImage = site.origin ? `${site.origin}/og-image.jpg` : "/og-image.jpg";
+    const share = siteShareMeta(site);
     return {
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "theme-color", content: "#1a1d22" },
+      { name: "theme-color", content: site.isMichiganJunkCars ? "#0a0a0a" : "#1a1d22" },
       { title },
       { name: "description", content: description },
       { name: "author", content: business.name },
@@ -131,16 +150,19 @@ export const Route = createRootRouteWithContext<{
       { property: "og:type", content: "website" },
       { property: "og:title", content: title },
       { property: "og:description", content: description },
-      { property: "og:image", content: ogImage },
+      { property: "og:image", content: share.ogImage },
+      { property: "og:image:type", content: "image/png" },
+      { property: "og:image:alt", content: share.logoAlt },
       ...(site.origin ? [{ property: "og:url", content: site.origin }] : []),
-      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:card", content: share.twitterCard },
       { name: "twitter:title", content: title },
       { name: "twitter:description", content: description },
+      { name: "twitter:image", content: share.ogImage },
     ],
     links: [
       ...(site.origin ? [{ rel: "canonical", href: site.origin }] : []),
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico" },
+      ...siteIconLinks(site),
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" },
@@ -168,7 +190,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       },
       {
         type: "application/ld+json",
-        children: JSON.stringify(orgJsonLd(business)),
+        children: JSON.stringify(orgJsonLd(business, site)),
       },
     ],
   };
@@ -217,6 +239,7 @@ function RootComponent() {
         </div>
         <QuotePopup />
         <CookieConsent />
+        <WebsiteTracker />
       </QuotePopupProvider>
     </QueryClientProvider>
   );

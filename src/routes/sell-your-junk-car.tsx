@@ -76,7 +76,7 @@ function SellPage() {
             <div className="lg:sticky top-24 rounded-2xl border border-border bg-card p-6 shadow-2xl shadow-black/30">
               <h3 className="font-display text-2xl font-bold">Get my offer</h3>
               <p className="text-sm text-muted-foreground mt-1 mb-5">30 seconds. Guaranteed price.</p>
-              <OpenQuoteButton size="lg" />
+              <OpenQuoteButton size="lg" trackLabel="Get Quote — Sell page" />
             </div>
           </aside>
         </div>

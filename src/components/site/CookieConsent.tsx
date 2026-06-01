@@ -4,11 +4,9 @@ import {
   storeConsentChoice,
   updateGoogleConsent,
 } from "@/lib/google-consent";
-import { useQuotePopup } from "./QuotePopupContext";
 
 export function CookieConsent() {
   const [visible, setVisible] = useState(false);
-  const { openQuotePopup } = useQuotePopup();
 
   useEffect(() => {
     setVisible(readStoredConsentChoice() === null);
@@ -18,8 +16,6 @@ export function CookieConsent() {
     storeConsentChoice(granted);
     updateGoogleConsent(granted);
     setVisible(false);
-    // After the user accepts or rejects cookies, show the quote form.
-    openQuotePopup(null);
   }
 
   if (!visible) return null;
