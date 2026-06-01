@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UsedAutoPartsRouteImport } from './routes/used-auto-parts'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SellYourJunkCarRouteImport } from './routes/sell-your-junk-car'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
+import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as JunkCarRemovalRouteImport } from './routes/junk-car-removal'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -33,6 +35,16 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const SellYourJunkCarRoute = SellYourJunkCarRouteImport.update({
   id: '/sell-your-junk-car',
   path: '/sell-your-junk-car',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
+  id: '/llms.txt',
+  path: '/llms.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JunkCarRemovalRoute = JunkCarRemovalRouteImport.update({
@@ -79,6 +91,8 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/junk-car-removal': typeof JunkCarRemovalRoute
+  '/llms.txt': typeof LlmsDottxtRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/sell-your-junk-car': typeof SellYourJunkCarRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/used-auto-parts': typeof UsedAutoPartsRoute
@@ -91,6 +105,8 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/junk-car-removal': typeof JunkCarRemovalRoute
+  '/llms.txt': typeof LlmsDottxtRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/sell-your-junk-car': typeof SellYourJunkCarRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/used-auto-parts': typeof UsedAutoPartsRoute
@@ -104,6 +120,8 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/junk-car-removal': typeof JunkCarRemovalRoute
+  '/llms.txt': typeof LlmsDottxtRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/sell-your-junk-car': typeof SellYourJunkCarRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/used-auto-parts': typeof UsedAutoPartsRoute
@@ -118,6 +136,8 @@ export interface FileRouteTypes {
     | '/contact'
     | '/faq'
     | '/junk-car-removal'
+    | '/llms.txt'
+    | '/robots.txt'
     | '/sell-your-junk-car'
     | '/sitemap.xml'
     | '/used-auto-parts'
@@ -130,6 +150,8 @@ export interface FileRouteTypes {
     | '/contact'
     | '/faq'
     | '/junk-car-removal'
+    | '/llms.txt'
+    | '/robots.txt'
     | '/sell-your-junk-car'
     | '/sitemap.xml'
     | '/used-auto-parts'
@@ -142,6 +164,8 @@ export interface FileRouteTypes {
     | '/contact'
     | '/faq'
     | '/junk-car-removal'
+    | '/llms.txt'
+    | '/robots.txt'
     | '/sell-your-junk-car'
     | '/sitemap.xml'
     | '/used-auto-parts'
@@ -155,6 +179,8 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
   JunkCarRemovalRoute: typeof JunkCarRemovalRoute
+  LlmsDottxtRoute: typeof LlmsDottxtRoute
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
   SellYourJunkCarRoute: typeof SellYourJunkCarRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   UsedAutoPartsRoute: typeof UsedAutoPartsRoute
@@ -181,6 +207,20 @@ declare module '@tanstack/react-router' {
       path: '/sell-your-junk-car'
       fullPath: '/sell-your-junk-car'
       preLoaderRoute: typeof SellYourJunkCarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/llms.txt': {
+      id: '/llms.txt'
+      path: '/llms.txt'
+      fullPath: '/llms.txt'
+      preLoaderRoute: typeof LlmsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/junk-car-removal': {
@@ -243,6 +283,8 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
   JunkCarRemovalRoute: JunkCarRemovalRoute,
+  LlmsDottxtRoute: LlmsDottxtRoute,
+  RobotsDottxtRoute: RobotsDottxtRoute,
   SellYourJunkCarRoute: SellYourJunkCarRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   UsedAutoPartsRoute: UsedAutoPartsRoute,

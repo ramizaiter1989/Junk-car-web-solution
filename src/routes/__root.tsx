@@ -21,14 +21,9 @@ import { QuotePopupProvider } from "@/components/site/QuotePopupContext";
 import { CookieConsent } from "@/components/site/CookieConsent";
 import { WebsiteTracker } from "@/components/site/WebsiteTracker";
 import { buildConsentModeInitScript } from "@/lib/google-consent";
-import {
-  absoluteSiteAsset,
-  siteIconLinks,
-  siteLogoPath,
-  siteOgImagePath,
-  siteShareMeta,
-} from "@/lib/site-branding";
+import { siteIconLinks, siteShareMeta } from "@/lib/site-branding";
 import { trackCallAttrs } from "@/lib/website-tracking";
+import { buildStructuredDataGraph } from "@/lib/ai-discovery";
 
 const GA_MEASUREMENT_ID = "G-JWK882Q31Z";
 const GTM_CONTAINER_ID = "GTM-N48HKMF5";
@@ -82,34 +77,8 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-function orgJsonLd(business: SiteBusiness, site: SiteConfig) {
-  const logoPath = siteLogoPath(site);
-  const imagePath = siteOgImagePath(site);
-  const logo = logoPath ? absoluteSiteAsset(logoPath, site) : undefined;
-  const image = absoluteSiteAsset(imagePath, site);
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "AutomotiveBusiness",
-    name: business.name,
-    image,
-    ...(logo ? { logo } : {}),
-    telephone: business.phones[0],
-    email: business.email,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: business.address.street,
-      addressLocality: business.address.city,
-      addressRegion: business.address.region,
-      postalCode: business.address.postal,
-      addressCountry: business.address.country,
-    },
-    geo: { "@type": "GeoCoordinates", latitude: business.geo.lat, longitude: business.geo.lng },
-    openingHours: "Mo-Sa 07:00-20:00",
-    priceRange: "$$",
-    areaServed: business.serviceArea.map((c) => ({ "@type": "City", name: c })),
-    sameAs: [] as string[],
-  };
+function structuredDataJsonLd(business: SiteBusiness, site: SiteConfig) {
+  return buildStructuredDataGraph(business, site, site.origin);
 }
 
 export const Route = createRootRouteWithContext<{
@@ -161,6 +130,7 @@ export const Route = createRootRouteWithContext<{
     ],
     links: [
       ...(site.origin ? [{ rel: "canonical", href: site.origin }] : []),
+      { rel: "alternate", type: "text/plain", href: "/llms.txt" },
       { rel: "stylesheet", href: appCss },
       ...siteIconLinks(site),
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -190,7 +160,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       },
       {
         type: "application/ld+json",
-        children: JSON.stringify(orgJsonLd(business, site)),
+        children: JSON.stringify(structuredDataJsonLd(business, site)),
       },
     ],
   };

@@ -13,8 +13,9 @@ import {
 export function WebsiteTracker() {
   const site = useSiteConfig();
   const enabled = isTrackingEnabled(site.isMichiganJunkCars);
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const search = useRouterState({ select: (s) => s.location.search });
+  const locationKey = useRouterState({
+    select: (s) => `${s.location.pathname}${s.location.searchStr}`,
+  });
   const lastPathRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -27,11 +28,10 @@ export function WebsiteTracker() {
   useEffect(() => {
     if (!enabled) return;
 
-    const pathKey = `${pathname}${search}`;
-    if (lastPathRef.current === pathKey) return;
-    lastPathRef.current = pathKey;
+    if (lastPathRef.current === locationKey) return;
+    lastPathRef.current = locationKey;
     trackPageView();
-  }, [enabled, pathname, search]);
+  }, [enabled, locationKey]);
 
   return null;
 }
