@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
-  Link,
+  Navigate,
   createRootRouteWithContext,
   useRouter,
   HeadContent,
@@ -14,7 +14,6 @@ import { Footer } from "@/components/site/Footer";
 import { callInMeta, resolveBusiness, type SiteBusiness } from "@/lib/business";
 import { getSiteContext } from "@/lib/get-site-business";
 import { resolveSiteConfig, type SiteConfig } from "@/lib/site-config";
-import { useSiteBusiness } from "@/lib/use-site-business";
 import { HiddenPartnerLink } from "@/components/site/HiddenPartnerLink";
 import { QuotePopup } from "@/components/site/QuotePopup";
 import { QuotePopupProvider } from "@/components/site/QuotePopupContext";
@@ -22,37 +21,13 @@ import { CookieConsent } from "@/components/site/CookieConsent";
 import { WebsiteTracker } from "@/components/site/WebsiteTracker";
 import { buildConsentModeInitScript } from "@/lib/google-consent";
 import { siteIconLinks, siteShareMeta } from "@/lib/site-branding";
-import { trackCallAttrs } from "@/lib/website-tracking";
 import { buildStructuredDataGraph } from "@/lib/ai-discovery";
 
 const GA_MEASUREMENT_ID = "G-JWK882Q31Z";
 const GTM_CONTAINER_ID = "GTM-N48HKMF5";
 
 function NotFoundComponent() {
-  const business = useSiteBusiness();
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="font-display text-7xl font-bold text-primary">404</h1>
-        <h2 className="mt-4 text-xl font-semibold">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you&apos;re looking for doesn&apos;t exist. Need to sell a junk car? We can help.
-        </p>
-        <div className="mt-6 flex justify-center gap-3">
-          <Link to="/" className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-bold text-primary-foreground hover:bg-primary/90">
-            Go home
-          </Link>
-          <a
-            href={business.primaryPhoneHref}
-            {...trackCallAttrs("404 page", business.primaryPhone)}
-            className="inline-flex items-center justify-center rounded-md border border-border px-4 py-2 text-sm font-semibold hover:bg-secondary"
-          >
-            Call {business.primaryPhone}
-          </a>
-        </div>
-      </div>
-    </div>
-  );
+  return <Navigate to="/" replace />;
 }
 
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
