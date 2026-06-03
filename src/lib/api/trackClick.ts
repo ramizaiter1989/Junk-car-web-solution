@@ -21,8 +21,7 @@ export type TrackClickSuccess = {
   telegram_sent: boolean;
 };
 
-const DEFAULT_TRACK_CLICK_URL =
-  "https://rento-lb.com/api/api/michigan-junk-cars/track-click";
+const DEFAULT_TRACK_CLICK_URL = "/michigan-junk-cars/track-click";
 
 function trackClickUrl() {
   return import.meta.env.VITE_TRACK_CLICK_API_URL ?? DEFAULT_TRACK_CLICK_URL;

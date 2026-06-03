@@ -25,8 +25,7 @@ export type InstantCashOfferError = {
   };
 };
 
-const DEFAULT_API_URL =
-  "https://rento-lb.com/api/api/michigan-junk-cars/instant-cash-offer";
+const DEFAULT_API_URL = "/michigan-junk-cars/instant-cash-offer";
 
 export const OFFER_PHOTO_MAX_BYTES = 10 * 1024 * 1024;
 
