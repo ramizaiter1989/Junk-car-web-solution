@@ -1,3 +1,5 @@
+import { DEFAULT_OFFER_API_URL } from "./rento-endpoints";
+
 export type InstantCashOfferPayload = {
   full_name: string;
   phone_number: string;
@@ -16,16 +18,18 @@ export type InstantCashOfferSuccess = {
   reference_id?: number;
 };
 
-export type InstantCashOfferError = {
-  status: number;
-  data: {
-    success?: false;
-    message?: string;
-    errors?: Record<string, string[]>;
-  };
+export type InstantCashOfferErrorBody = {
+  success?: false;
+  message?: string;
+  errors?: Record<string, string[]>;
 };
 
-const DEFAULT_API_URL = "/michigan-junk-cars/instant-cash-offer";
+export type InstantCashOfferError = {
+  status: number;
+  data: InstantCashOfferErrorBody;
+};
+
+type InstantCashOfferResponseBody = InstantCashOfferSuccess | InstantCashOfferErrorBody;
 
 export const OFFER_PHOTO_MAX_BYTES = 10 * 1024 * 1024;
 
@@ -71,7 +75,7 @@ export function validateOfferPhoto(file: File | null | undefined): string | null
 export async function postInstantCashOffer(
   payload: InstantCashOfferPayload,
 ): Promise<InstantCashOfferSuccess> {
-  const url = import.meta.env.VITE_OFFER_API_URL ?? DEFAULT_API_URL;
+  const url = import.meta.env.VITE_OFFER_API_URL ?? DEFAULT_OFFER_API_URL;
   const headers: Record<string, string> = {
     Accept: "application/json",
   };
@@ -103,13 +107,20 @@ export async function postInstantCashOffer(
     body: formData,
   });
 
-  const data = (await res.json().catch(() => ({}))) as InstantCashOfferSuccess & {
-    errors?: Record<string, string[]>;
-    message?: string;
-  };
+  const data = (await res.json().catch(() => ({}))) as InstantCashOfferResponseBody;
 
   if (!res.ok) {
-    throw { status: res.status, data } satisfies InstantCashOfferError;
+    throw {
+      status: res.status,
+      data: data as InstantCashOfferErrorBody,
+    } satisfies InstantCashOfferError;
+  }
+
+  if (data.success !== true) {
+    throw {
+      status: res.status,
+      data: data as InstantCashOfferErrorBody,
+    } satisfies InstantCashOfferError;
   }
 
   return data;

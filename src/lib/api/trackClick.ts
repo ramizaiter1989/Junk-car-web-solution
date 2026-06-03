@@ -1,3 +1,5 @@
+import { DEFAULT_TRACK_CLICK_URL } from "./rento-endpoints";
+
 export type TrackClickEventType = "page_view" | "click" | "cta" | "link";
 
 export type TrackClickPayload = {
@@ -20,8 +22,6 @@ export type TrackClickSuccess = {
   total_clicks: number;
   telegram_sent: boolean;
 };
-
-const DEFAULT_TRACK_CLICK_URL = "/michigan-junk-cars/track-click";
 
 function trackClickUrl() {
   return import.meta.env.VITE_TRACK_CLICK_API_URL ?? DEFAULT_TRACK_CLICK_URL;
