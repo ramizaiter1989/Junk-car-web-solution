@@ -5,11 +5,19 @@ import {
   updateGoogleConsent,
 } from "@/lib/google-consent";
 
+const CONSENT_BANNER_DELAY_MS = 60_000;
+
 export function CookieConsent() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    setVisible(readStoredConsentChoice() === null);
+    if (readStoredConsentChoice() !== null) return;
+
+    const timer = window.setTimeout(() => {
+      setVisible(true);
+    }, CONSENT_BANNER_DELAY_MS);
+
+    return () => window.clearTimeout(timer);
   }, []);
 
   function applyChoice(granted: boolean) {
