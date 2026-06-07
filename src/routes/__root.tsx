@@ -25,6 +25,7 @@ import { buildStructuredDataGraph } from "@/lib/ai-discovery";
 
 const GA_MEASUREMENT_ID = "G-JWK882Q31Z";
 const GTM_CONTAINER_ID = "GTM-N48HKMF5";
+const GOOGLE_ADS_ID = "AW-18187145331";
 
 function NotFoundComponent() {
   return <Navigate to="/" replace />;
@@ -131,6 +132,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         children: `
           gtag('js', new Date());
           gtag('config', '${GA_MEASUREMENT_ID}');
+          gtag('config', '${GOOGLE_ADS_ID}');
         `.trim(),
       },
       {

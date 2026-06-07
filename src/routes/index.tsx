@@ -413,7 +413,7 @@ function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="rounded-2xl border border-border overflow-hidden h-[400px] bg-card">
+          <div className="rounded-2xl border border-border overflow-hidden h-100 bg-card">
             <iframe
               title="Wayne Automotive Recyclers location map"
               src="https://www.google.com/maps?q=36597+Annapolis,+Wayne,+MI&output=embed"
