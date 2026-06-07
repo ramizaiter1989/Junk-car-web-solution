@@ -138,7 +138,7 @@ function HomePage() {
                 </div>
                 <h2 className="font-display text-2xl font-bold">Get your guaranteed quote</h2>
                 <p className="text-sm text-muted-foreground mt-1 mb-6">
-                  Takes 30 seconds. Reply within 15 minutes. Upload a photo for the fastest offer.
+                  Finish before the timer runs out and get $100+ added to your price.
                 </p>
                 <ul className="mb-6 space-y-2 text-sm text-muted-foreground">
                   <li className="flex items-center gap-2">
