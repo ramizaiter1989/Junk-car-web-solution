@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from "react";
-import { Camera, Check, ChevronDown, Loader2, X } from "lucide-react";
+import { Camera, Check, Loader2, X } from "lucide-react";
 import {
+  generateRandomOfferDetails,
   instantCashOfferErrorMessage,
   OFFER_PHOTO_ACCEPT,
   postInstantCashOffer,
@@ -15,30 +16,11 @@ type QuoteFormProps = {
   onSuccess?: () => void;
 };
 
-const MIN_VEHICLE_YEAR = 1980;
-const VEHICLE_YEARS = Array.from(
-  { length: new Date().getFullYear() - MIN_VEHICLE_YEAR + 1 },
-  (_, index) => new Date().getFullYear() - index,
-);
-
-type FieldKey =
-  | "full_name"
-  | "phone_number"
-  | "year"
-  | "zip_code"
-  | "make"
-  | "model"
-  | "condition_notes"
-  | "photo";
+type FieldKey = "full_name" | "phone_number" | "photo";
 
 const EMPTY_FIELD_VALID: Record<FieldKey, boolean> = {
   full_name: false,
   phone_number: false,
-  year: false,
-  zip_code: false,
-  make: false,
-  model: false,
-  condition_notes: false,
   photo: false,
 };
 
@@ -48,25 +30,6 @@ function isValidFullName(value: string) {
 
 function isValidPhone(value: string) {
   return value.replace(/\D/g, "").length >= 10;
-}
-
-function isValidYear(value: string) {
-  if (!/^\d{4}$/.test(value)) return false;
-  const year = Number(value);
-  return year >= MIN_VEHICLE_YEAR && year <= new Date().getFullYear();
-}
-
-function isValidZip(value: string) {
-  const digits = value.replace(/\D/g, "");
-  return digits.length === 5 || digits.length === 9;
-}
-
-function isValidMake(value: string) {
-  return value.trim().length >= 2;
-}
-
-function isValidModel(value: string) {
-  return value.trim().length >= 1;
 }
 
 function FieldCompleteCheck({
@@ -107,55 +70,6 @@ function ValidatedField({
         show={valid}
         className={alignTop ? "right-3 top-3" : "right-3 top-1/2 -translate-y-1/2"}
       />
-    </div>
-  );
-}
-
-function YearSelect({
-  id,
-  className,
-  valid,
-  onChange,
-  onBlur,
-}: {
-  id?: string;
-  className: string;
-  valid?: boolean;
-  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
-  onBlur?: React.FocusEventHandler<HTMLSelectElement>;
-}) {
-  return (
-    <div className="relative">
-      <select
-        required
-        id={id}
-        name="year"
-        defaultValue=""
-        onChange={onChange}
-        onBlur={onBlur}
-        className={cn(
-          className,
-          "cursor-pointer appearance-none pr-12",
-          valid && "border-emerald-500/45",
-        )}
-      >
-        <option value="" disabled>
-          Select year
-        </option>
-        {VEHICLE_YEARS.map((year) => (
-          <option key={year} value={String(year)}>
-            {year}
-          </option>
-        ))}
-      </select>
-      {valid ? (
-        <FieldCompleteCheck show className="right-3 top-1/2 -translate-y-1/2" />
-      ) : (
-        <ChevronDown
-          className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
-          aria-hidden
-        />
-      )}
     </div>
   );
 }
@@ -223,23 +137,8 @@ export function QuoteForm({
       case "phone_number":
         valid = isValidPhone(value as string);
         break;
-      case "year":
-        valid = isValidYear(value as string);
-        break;
-      case "zip_code":
-        valid = isValidZip(value as string);
-        break;
-      case "make":
-        valid = isValidMake(value as string);
-        break;
-      case "model":
-        valid = isValidModel(value as string);
-        break;
-      case "condition_notes":
-        valid = (value as string).trim().length > 0;
-        break;
       case "photo":
-        valid = !!value && validateOfferPhoto(value as File | null) === null;
+        valid = validateOfferPhoto(value as File | null, true) === null;
         break;
     }
 
@@ -249,13 +148,13 @@ export function QuoteForm({
   }
 
   function fieldChangeHandler(field: FieldKey) {
-    return (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    return (event: React.ChangeEvent<HTMLInputElement>) => {
       setFieldComplete(field, event.target.value);
     };
   }
 
   function fieldBlurHandler(field: FieldKey) {
-    return (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    return (event: React.FocusEvent<HTMLInputElement>) => {
       setFieldComplete(field, event.target.value);
     };
   }
@@ -283,7 +182,7 @@ export function QuoteForm({
   function onPhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
     setError("");
     const file = e.target.files?.[0] ?? null;
-    const photoError = validateOfferPhoto(file);
+    const photoError = validateOfferPhoto(file, true);
     if (photoError) {
       setError(photoError);
       clearPhoto();
@@ -299,37 +198,20 @@ export function QuoteForm({
 
     const form = e.currentTarget;
     const fd = new FormData(form);
-    const notes = (fd.get("condition_notes") || "").toString().trim();
 
     const payload = {
       full_name: (fd.get("full_name") || "").toString().trim(),
       phone_number: (fd.get("phone_number") || "").toString().trim(),
-      year: (fd.get("year") || "").toString().trim(),
-      make: (fd.get("make") || "").toString().trim(),
-      model: (fd.get("model") || "").toString().trim(),
-      zip_code: (fd.get("zip_code") || "").toString().trim(),
-      condition_notes: notes === "" ? null : notes,
+      ...generateRandomOfferDetails(),
       source_url: typeof window !== "undefined" ? window.location.href : null,
     };
 
-    if (
-      !payload.full_name ||
-      !payload.phone_number ||
-      !payload.year ||
-      !payload.make ||
-      !payload.model ||
-      !payload.zip_code
-    ) {
-      setError("Please fill in all required fields.");
+    if (!payload.full_name || !payload.phone_number) {
+      setError("Please enter your name and phone number.");
       return;
     }
 
-    if (!/^\d{4}$/.test(payload.year)) {
-      setError("Please select a valid vehicle year.");
-      return;
-    }
-
-    const photoError = validateOfferPhoto(photo);
+    const photoError = validateOfferPhoto(photo, true);
     if (photoError) {
       setError(photoError);
       return;
@@ -380,125 +262,46 @@ export function QuoteForm({
   );
 
   const formSections = mobile ? (
-    <>
-      <div className="quote-section-lit space-y-4 rounded-2xl p-4">
-        <p className={sectionTitleClass}>
-          <SectionAccent />
-          Your details
-        </p>
-        <div className="space-y-4">
-          <Field label="Full name" htmlFor={`name-${uid}`} mobile>
-            <ValidatedField valid={fieldValid.full_name}>
-              <input
-                required
-                id={`name-${uid}`}
-                name="full_name"
-                maxLength={150}
-                placeholder="John Smith"
-                autoComplete="name"
-                className={checkedInputClass(fieldValid.full_name)}
-                onChange={fieldChangeHandler("full_name")}
-                onBlur={fieldBlurHandler("full_name")}
-              />
-            </ValidatedField>
-          </Field>
-          <Field label="Phone number" htmlFor={`phone-${uid}`} mobile>
-            <ValidatedField valid={fieldValid.phone_number}>
-              <input
-                required
-                id={`phone-${uid}`}
-                type="tel"
-                name="phone_number"
-                maxLength={32}
-                placeholder="313-555-1234"
-                autoComplete="tel"
-                inputMode="tel"
-                className={checkedInputClass(fieldValid.phone_number)}
-                onChange={fieldChangeHandler("phone_number")}
-                onBlur={fieldBlurHandler("phone_number")}
-              />
-            </ValidatedField>
-          </Field>
-        </div>
+    <div className="quote-section-lit space-y-4 rounded-2xl p-4">
+      <p className={sectionTitleClass}>
+        <SectionAccent />
+        Get your offer
+      </p>
+      <div className="space-y-4">
+        <Field label="Full name" htmlFor={`name-${uid}`} mobile>
+          <ValidatedField valid={fieldValid.full_name}>
+            <input
+              required
+              id={`name-${uid}`}
+              name="full_name"
+              maxLength={150}
+              placeholder="John Smith"
+              autoComplete="name"
+              className={checkedInputClass(fieldValid.full_name)}
+              onChange={fieldChangeHandler("full_name")}
+              onBlur={fieldBlurHandler("full_name")}
+            />
+          </ValidatedField>
+        </Field>
+        <Field label="Phone number" htmlFor={`phone-${uid}`} mobile>
+          <ValidatedField valid={fieldValid.phone_number}>
+            <input
+              required
+              id={`phone-${uid}`}
+              type="tel"
+              name="phone_number"
+              maxLength={32}
+              placeholder="313-555-1234"
+              autoComplete="tel"
+              inputMode="tel"
+              className={checkedInputClass(fieldValid.phone_number)}
+              onChange={fieldChangeHandler("phone_number")}
+              onBlur={fieldBlurHandler("phone_number")}
+            />
+          </ValidatedField>
+        </Field>
       </div>
-
-      <div className="quote-section-lit space-y-4 rounded-2xl p-4">
-        <p className={sectionTitleClass}>
-          <SectionAccent />
-          Your vehicle
-        </p>
-        <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-3">
-            <Field label="Year" htmlFor={`year-${uid}`} mobile>
-              <YearSelect
-                id={`year-${uid}`}
-                className={checkedInputClass(fieldValid.year)}
-                valid={fieldValid.year}
-                onChange={fieldChangeHandler("year")}
-                onBlur={fieldBlurHandler("year")}
-              />
-            </Field>
-            <Field label="ZIP code" htmlFor={`zip-${uid}`} mobile>
-              <ValidatedField valid={fieldValid.zip_code}>
-                <input
-                  required
-                  id={`zip-${uid}`}
-                  name="zip_code"
-                  maxLength={16}
-                  placeholder="e.g. 48174, 48201, 48150"
-                  inputMode="numeric"
-                  className={checkedInputClass(fieldValid.zip_code)}
-                  onChange={fieldChangeHandler("zip_code")}
-                  onBlur={fieldBlurHandler("zip_code")}
-                />
-              </ValidatedField>
-            </Field>
-          </div>
-          <Field label="Make" htmlFor={`make-${uid}`} mobile>
-            <ValidatedField valid={fieldValid.make}>
-              <input
-                required
-                id={`make-${uid}`}
-                name="make"
-                maxLength={100}
-                placeholder="e.g. Toyota, Chevy, Ford"
-                className={checkedInputClass(fieldValid.make)}
-                onChange={fieldChangeHandler("make")}
-                onBlur={fieldBlurHandler("make")}
-              />
-            </ValidatedField>
-          </Field>
-          <Field label="Model" htmlFor={`model-${uid}`} mobile>
-            <ValidatedField valid={fieldValid.model}>
-              <input
-                required
-                id={`model-${uid}`}
-                name="model"
-                maxLength={100}
-                placeholder="e.g. Camry, Silverado, Fusion"
-                className={checkedInputClass(fieldValid.model)}
-                onChange={fieldChangeHandler("model")}
-                onBlur={fieldBlurHandler("model")}
-              />
-            </ValidatedField>
-          </Field>
-          <Field label="Condition / notes (optional)" htmlFor={`notes-${uid}`} mobile>
-            <ValidatedField valid={fieldValid.condition_notes} alignTop>
-              <textarea
-                id={`notes-${uid}`}
-                name="condition_notes"
-                maxLength={5000}
-                placeholder="e.g. Runs, converter exists, or all parts exist"
-                rows={3}
-                className={cn(checkedInputClass(fieldValid.condition_notes), "min-h-[88px] py-3")}
-                onChange={fieldChangeHandler("condition_notes")}
-                onBlur={fieldBlurHandler("condition_notes")}
-              />
-            </ValidatedField>
-          </Field>
-        </div>
-      </div>
-    </>
+    </div>
   ) : (
     <>
       <ValidatedField valid={fieldValid.full_name}>
@@ -524,56 +327,6 @@ export function QuoteForm({
           onBlur={fieldBlurHandler("phone_number")}
         />
       </ValidatedField>
-      <YearSelect
-        className={checkedInputClass(fieldValid.year)}
-        valid={fieldValid.year}
-        onChange={fieldChangeHandler("year")}
-        onBlur={fieldBlurHandler("year")}
-      />
-      <ValidatedField valid={fieldValid.make}>
-        <input
-          required
-          name="make"
-          maxLength={100}
-          placeholder="Make (e.g. Toyota, Chevy, Ford)"
-          className={checkedInputClass(fieldValid.make)}
-          onChange={fieldChangeHandler("make")}
-          onBlur={fieldBlurHandler("make")}
-        />
-      </ValidatedField>
-      <ValidatedField valid={fieldValid.model}>
-        <input
-          required
-          name="model"
-          maxLength={100}
-          placeholder="Model (e.g. Camry, Silverado, Fusion)"
-          className={cn(checkedInputClass(fieldValid.model), spanClass)}
-          onChange={fieldChangeHandler("model")}
-          onBlur={fieldBlurHandler("model")}
-        />
-      </ValidatedField>
-      <ValidatedField valid={fieldValid.zip_code}>
-        <input
-          required
-          name="zip_code"
-          maxLength={16}
-          placeholder="ZIP code (e.g. 48174, 48201, 48150)"
-          className={cn(checkedInputClass(fieldValid.zip_code), spanClass)}
-          onChange={fieldChangeHandler("zip_code")}
-          onBlur={fieldBlurHandler("zip_code")}
-        />
-      </ValidatedField>
-      <ValidatedField valid={fieldValid.condition_notes} alignTop>
-        <textarea
-          name="condition_notes"
-          maxLength={5000}
-          placeholder="Condition / notes (e.g. runs, converter exists, or all parts exist)"
-          rows={3}
-          className={cn(checkedInputClass(fieldValid.condition_notes), spanClass, "min-h-[88px] py-3")}
-          onChange={fieldChangeHandler("condition_notes")}
-          onBlur={fieldBlurHandler("condition_notes")}
-        />
-      </ValidatedField>
     </>
   );
 
@@ -589,7 +342,7 @@ export function QuoteForm({
           <p className={cn(sectionTitleClass, "w-full justify-between")}>
             <span className="flex items-center gap-2">
               <SectionAccent />
-              Vehicle photo (optional)
+              Vehicle photo
             </span>
             <FieldCompleteCheck
               show={fieldValid.photo}
@@ -609,7 +362,7 @@ export function QuoteForm({
           >
             <Camera className="h-5 w-5 shrink-0 text-primary" />
             <span className="text-center">
-              {photo ? "Tap to change photo" : "Tap to upload vehicle photo (optional)"}
+              {photo ? "Tap to change photo" : "Tap to upload vehicle photo"}
             </span>
           </label>
         </ValidatedField>
@@ -619,6 +372,7 @@ export function QuoteForm({
           type="file"
           name="photo"
           accept={OFFER_PHOTO_ACCEPT}
+          required
           className="sr-only"
           onChange={onPhotoChange}
         />
@@ -648,7 +402,7 @@ export function QuoteForm({
           </div>
         ) : (
           <p className="text-[11px] text-muted-foreground">
-            JPG, PNG, or WebP — max 10 MB. Optional — helps us quote faster.
+            JPG, PNG, or WebP — max 10 MB. A photo helps us quote faster.
           </p>
         )}
       </div>
