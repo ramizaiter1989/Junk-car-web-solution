@@ -39,7 +39,7 @@ function ContactPage() {
       <PageHero
         eyebrow="Contact"
         title="Let&apos;s get you a cash offer."
-        subtitle="Call us, request a quote online, or stop by our Wayne, Michigan yard — whichever is easiest."
+        subtitle="Call us, request a quote online, or stop by our Wayne, Michigan yard. Whatever is easiest for you."
         crumbs={[{ label: "Home", to: "/" }, { label: "Contact" }]}
       />
 
@@ -76,7 +76,7 @@ function ContactPage() {
           <div className="rounded-2xl border border-border bg-card p-6 shadow-2xl shadow-black/30">
             <h3 className="font-display text-2xl font-bold">Request your free quote</h3>
             <p className="text-sm text-muted-foreground mt-1 mb-5">30 seconds. Guaranteed price.</p>
-            <OpenQuoteButton size="lg" trackLabel="Get Quote — Contact page" />
+            <OpenQuoteButton size="lg" trackLabel="Get Quote: Contact page" />
           </div>
         </div>
 

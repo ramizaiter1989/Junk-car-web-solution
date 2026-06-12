@@ -2,7 +2,7 @@ import { normalizeHost } from "./host";
 
 /**
  * Override phones for specific domains only. All other hosts use DEFAULT_BUSINESS
- * (313-500-6233 / 313-286-6491). List canonical host without `www` — www is added automatically.
+ * (313-500-6233 / 313-286-6491). List canonical host without `www`; www is added automatically.
  */
 const DOMAIN_GROUPS: { hosts: readonly string[]; phones: readonly string[] }[] = [
   {

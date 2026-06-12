@@ -79,14 +79,14 @@ export function resolveClickLabel(element: Element): string {
 
   if (element instanceof HTMLInputElement) {
     const inputLabel = element.value || element.name || element.type;
-    if (inputLabel) return truncate(`Input — ${inputLabel}`);
+    if (inputLabel) return truncate(`Input: ${inputLabel}`);
   }
 
   if (element instanceof HTMLAnchorElement) {
     const href = element.getAttribute("href") ?? "";
     const text = element.textContent?.trim();
     if (text) return truncate(text);
-    if (href) return truncate(`Link — ${href}`);
+    if (href) return truncate(`Link: ${href}`);
   }
 
   const text = element.textContent?.trim();
@@ -151,7 +151,7 @@ export function handleDocumentClick(event: MouseEvent) {
 /** Explicit labels for phone / tel links sent to track-click API. */
 export function trackCallAttrs(location: string, phone: string) {
   return {
-    "data-track": `Call — ${location} (${phone})`,
+    "data-track": `Call: ${location} (${phone})`,
     "data-track-event": "link",
   } as const;
 }
@@ -159,7 +159,7 @@ export function trackCallAttrs(location: string, phone: string) {
 /** Explicit labels for quote CTAs sent to track-click API. */
 export function trackQuoteAttrs(location: string) {
   return {
-    "data-track": `Get Quote — ${location}`,
+    "data-track": `Get Quote: ${location}`,
     "data-track-cta": "true",
   } as const;
 }

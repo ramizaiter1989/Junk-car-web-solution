@@ -31,11 +31,11 @@ export function QuoteOfferCountdown() {
   const finished = remaining === 0;
 
   const message = finished
-    ? "Submit now — your cash offer is still available"
+    ? "Submit now. Your cash offer is still available"
     : urgent
       ? "Hurry! Lock in priority callback before time runs out"
       : remaining <= 20
-        ? "You're almost there — finish before the timer ends"
+        ? "You're almost there. Finish before the timer ends"
         : "Complete your quote before the timer runs out";
 
   return (

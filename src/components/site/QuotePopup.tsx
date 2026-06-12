@@ -87,8 +87,13 @@ export function QuotePopup() {
                 <SheetTitle className="font-display text-2xl font-bold leading-tight">
                   Get your guaranteed quote
                 </SheetTitle>
-                <SheetDescription className="text-sm text-muted-foreground">
-                  Finish before the timer runs out and get $100+ added to your price.
+                <SheetDescription className="space-y-1 text-sm text-muted-foreground">
+                  <span className="block">
+                    Finish before the timer runs out and get $100+ added to your price.
+                  </span>
+                  <span className="block font-semibold text-primary">
+                    You&apos;ll get the highest price on the market.
+                  </span>
                 </SheetDescription>
               </SheetHeader>
 

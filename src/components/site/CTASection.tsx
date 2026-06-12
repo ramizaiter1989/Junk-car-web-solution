@@ -26,7 +26,7 @@ export function CTASection({
               <Phone className="h-4 w-4" /> Call {business.primaryPhone}
             </a>
             <OpenQuoteButton
-              trackLabel="Get Quote — CTA section"
+              trackLabel="Get Quote: CTA section"
               className="inline-flex items-center gap-2 rounded-md border border-border bg-secondary/60 px-6 py-3.5 text-sm font-bold uppercase tracking-wider hover:bg-secondary shadow-none"
             >
               Get Instant Quote <ArrowRight className="h-4 w-4" />

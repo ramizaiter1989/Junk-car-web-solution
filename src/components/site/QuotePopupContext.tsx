@@ -16,7 +16,7 @@ type QuotePopupContextValue = {
 
 const QuotePopupContext = createContext<QuotePopupContextValue | null>(null);
 
-/** Last control that opened the drawer — used to restore focus on close. */
+/** Last control that opened the drawer. Used to restore focus on close. */
 export const quotePopupTriggerRef: { current: HTMLElement | null } = { current: null };
 
 function blurActiveElement() {

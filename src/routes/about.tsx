@@ -16,8 +16,8 @@ export const Route = createFileRoute("/about")({
         site,
       ),
       description: site.isMichiganJunkCars
-        ? "Learn about Michigan Junk Cars — a licensed Michigan company buying junk cars statewide with free towing and instant cash offers."
-        : "Learn about Wayne Automotive Recyclers LLC — a licensed Michigan auto recycling company buying junk cars and supplying used auto parts since 2009.",
+        ? "Learn about Michigan Junk Cars, a licensed Michigan company buying junk cars statewide with free towing and instant cash offers."
+        : "Learn about Wayne Automotive Recyclers LLC, a licensed Michigan auto recycling company buying junk cars and supplying used auto parts since 2009.",
       business,
       site,
       ogTitle: brandTitle("About Wayne Automotive Recyclers LLC", "About Michigan Junk Cars", site),
@@ -33,7 +33,7 @@ function AboutPage() {
       <PageHero
         eyebrow="About Us"
         title="A Michigan-grown automotive recycling company."
-        subtitle="Wayne Automotive Recyclers LLC has spent over a decade helping Michigan drivers turn unwanted vehicles into cash — responsibly, transparently, and at top dollar."
+        subtitle="Wayne Automotive Recyclers LLC has spent over a decade helping Michigan drivers turn unwanted vehicles into cash, responsibly, transparently, and at top dollar."
         crumbs={[{ label: "Home", to: "/" }, { label: "About" }]}
       />
 
@@ -47,7 +47,7 @@ function AboutPage() {
                 Founded and operated in Wayne, Michigan, Wayne Automotive Recyclers LLC is a fully licensed automotive recycling company serving Wayne County, Metro Detroit, and the surrounding Michigan communities. We&apos;ve built our reputation paying top cash for junk cars while running an EPA-compliant, environmentally responsible recycling yard.
               </p>
               <p>
-                We&apos;re not a tow service that flips cars to junkyards. We <em className="text-foreground">are</em> the junkyard. That means we cut out the middleman, give our customers more money, and process every vehicle in-house — from drain-down and fluid recovery, to part recovery, to scrap metal recycling.
+                We&apos;re not a tow service that flips cars to junkyards. We <em className="text-foreground">are</em> the junkyard. That means we cut out the middleman, give our customers more money, and process every vehicle in-house, from drain-down and fluid recovery, to part recovery, to scrap metal recycling.
               </p>
               <p>
                 Whether you&apos;re looking to sell your junk car, source a tested used auto part, or schedule scrap vehicle removal anywhere in Michigan, our crew is here seven days a week to make it simple.

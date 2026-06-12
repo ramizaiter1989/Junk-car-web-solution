@@ -402,7 +402,7 @@ export function QuoteForm({
           </div>
         ) : (
           <p className="text-[11px] text-muted-foreground">
-            JPG, PNG, or WebP — max 10 MB. A photo helps us quote faster.
+            JPG, PNG, or WebP, max 10 MB. A photo helps us quote faster.
           </p>
         )}
       </div>
@@ -430,7 +430,7 @@ export function QuoteForm({
       </button>
 
       <p className={cn("text-center text-[11px] text-muted-foreground", spanClass, mobile && "pb-1")}>
-        By submitting you agree to be contacted about your vehicle. No spam — guaranteed.
+        By submitting you agree to be contacted about your vehicle. No spam, guaranteed.
       </p>
     </form>
   );

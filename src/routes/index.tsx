@@ -51,8 +51,8 @@ export const Route = createFileRoute("/")({
           "@type": "FAQPage",
           mainEntity: [
             { "@type": "Question", name: "How much can I get for my junk car in Michigan?", acceptedAnswer: { "@type": "Answer", text: "Most junk cars in Michigan sell between $200 and $5,000 depending on year, make, model, weight, and condition. We pay the highest local rates and offer guaranteed price quotes by phone." } },
-            { "@type": "Question", name: "Do you offer free junk car towing?", acceptedAnswer: { "@type": "Answer", text: "Yes — free same-day towing is included with every offer across Wayne County and Metro Detroit." } },
-            { "@type": "Question", name: "Do I need a title to sell my junk car?", acceptedAnswer: { "@type": "Answer", text: "A title is preferred but not always required. Call us — in many cases we can still buy your vehicle with just your ID and registration." } },
+            { "@type": "Question", name: "Do you offer free junk car towing?", acceptedAnswer: { "@type": "Answer", text: "Yes, free same-day towing is included with every offer across Wayne County and Metro Detroit." } },
+            { "@type": "Question", name: "Do I need a title to sell my junk car?", acceptedAnswer: { "@type": "Answer", text: "A title is preferred but not always required. Call us. In many cases we can still buy your vehicle with just your ID and registration." } },
           ],
         }),
       },
@@ -137,10 +137,13 @@ function HomePage() {
                   <DollarSign className="h-4 w-4" /> Instant Cash Offer
                 </div>
                 <h2 className="font-display text-2xl font-bold">Get your guaranteed quote</h2>
-                <p className="text-sm text-muted-foreground mt-1 mb-6">
+                <p className="text-sm text-muted-foreground mt-1">
                   Finish before the timer runs out and get $100+ added to your price.
                 </p>
-                <ul className="mb-6 space-y-2 text-sm text-muted-foreground">
+                <p className="mt-2 text-sm font-semibold text-primary">
+                  You&apos;ll get the highest price on the market.
+                </p>
+                <ul className="mb-6 mt-4 space-y-2 text-sm text-muted-foreground">
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" /> Free same-day towing
                   </li>
@@ -151,7 +154,7 @@ function HomePage() {
                     <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" /> No title? We can help
                   </li>
                 </ul>
-                <OpenQuoteButton size="lg" trackLabel="Get Quote — Home form card" />
+                <OpenQuoteButton size="lg" trackLabel="Get Quote: Home form card" />
               </div>
             </div>
           </div>
@@ -182,15 +185,15 @@ function HomePage() {
         <div className="max-w-2xl">
           <div className="text-xs font-bold uppercase tracking-widest text-primary">What We Do</div>
           <h2 className="mt-2 font-display text-4xl sm:text-5xl font-bold">Junk car services across Michigan</h2>
-          <p className="mt-3 text-muted-foreground">From sell-your-car to full vehicle recycling, Wayne Automotive Recyclers handles every step — fast, fair, and EPA-compliant.</p>
+          <p className="mt-3 text-muted-foreground">From sell-your-car to full vehicle recycling, Wayne Automotive Recyclers handles every step: fast, fair, and EPA-compliant.</p>
         </div>
 
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {[
             { Icon: HandCoins, t: "Sell Your Junk Car", d: "Top cash offers for junk, damaged, and unwanted cars across Michigan.", to: "/sell-your-junk-car" },
-            { Icon: Truck, t: "Free Junk Car Removal", d: "Same-day pickup and free towing — anywhere in Wayne County.", to: "/junk-car-removal" },
+            { Icon: Truck, t: "Free Junk Car Removal", d: "Same-day pickup and free towing anywhere in Wayne County.", to: "/junk-car-removal" },
             { Icon: Recycle, t: "Auto Recycling", d: "Certified, eco-friendly automotive recycling and scrap metal processing.", to: "/auto-recycling-services" },
-            { Icon: Wrench, t: "Used Auto Parts", d: "Tested, warrantied used auto parts for cars and trucks — shipped or in-store.", to: "/used-auto-parts" },
+            { Icon: Wrench, t: "Used Auto Parts", d: "Tested, warrantied used auto parts for cars and trucks, shipped or in-store.", to: "/used-auto-parts" },
           ].map(({ Icon, t, d, to }) => (
             <Link key={t} to={to} className="group relative rounded-xl border border-border bg-card p-6 hover:border-primary/60 hover:bg-card/80 transition-all">
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/15 text-primary mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
@@ -226,7 +229,7 @@ function HomePage() {
               <ol className="mt-8 space-y-6">
                 {[
                   { n: "01", Icon: Phone, t: "Tell us about your car", d: `Call ${business.primaryPhone} or submit our 30-second form with your vehicle details and ZIP code.` },
-                  { n: "02", Icon: DollarSign, t: "Get your instant cash offer", d: "We&apos;ll respond within 15 minutes with a guaranteed top-dollar quote — no haggling." },
+                  { n: "02", Icon: DollarSign, t: "Get your instant cash offer", d: "We&apos;ll respond within 15 minutes with a guaranteed top-dollar quote. No haggling." },
                   { n: "03", Icon: Truck, t: "Free pickup, instant cash", d: "We tow your junk car for free, often same-day, and pay you cash on the spot." },
                 ].map(({ n, Icon, t, d }) => (
                   <li key={n} className="flex gap-4">
@@ -258,9 +261,9 @@ function HomePage() {
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {[
-            { Icon: DollarSign, t: "Top-Dollar Offers", d: "We pay more than competitors because we recycle in-house — no middlemen." },
+            { Icon: DollarSign, t: "Top-Dollar Offers", d: "We pay more than competitors because we recycle in-house. No middlemen." },
             { Icon: Clock, t: "Same-Day Service", d: "Most pickups happen the same day you call. Often within 2 hours." },
-            { Icon: Truck, t: "Always Free Towing", d: "Free junk car towing is included in every offer — anywhere in our service area." },
+            { Icon: Truck, t: "Always Free Towing", d: "Free junk car towing is included in every offer, anywhere in our service area." },
             { Icon: ShieldCheck, t: "Licensed & Insured", d: "Fully licensed Michigan auto recycler with proper insurance and EPA compliance." },
             { Icon: Recycle, t: "Eco-Friendly Recycling", d: "Over 80% of every vehicle we process is recycled or reused responsibly." },
             { Icon: FileCheck, t: "Easy Paperwork", d: "We handle the title transfer paperwork and DMV notification for you." },
@@ -306,16 +309,16 @@ function HomePage() {
         <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] items-start">
           <div className="prose-invert max-w-none">
             <div className="text-xs font-bold uppercase tracking-widest text-primary">Serving All of Michigan</div>
-            <h2 className="mt-2 font-display text-4xl font-bold">Cash for junk cars Michigan — anywhere in Wayne County and Metro Detroit</h2>
+            <h2 className="mt-2 font-display text-4xl font-bold">Cash for junk cars Michigan, anywhere in Wayne County and Metro Detroit</h2>
             <div className="mt-5 space-y-4 text-muted-foreground leading-relaxed">
               <p>
-                Wayne Automotive Recyclers LLC is a locally owned, licensed Michigan automotive recycling company headquartered in Wayne, MI. As one of the area&apos;s most trusted <strong className="text-foreground">junk car buyers near you</strong>, we make it easy to sell your junk car, damaged car, wrecked vehicle, or non-running clunker — and walk away with cash in hand the same day.
+                Wayne Automotive Recyclers LLC is a locally owned, licensed Michigan automotive recycling company headquartered in Wayne, MI. As one of the area&apos;s most trusted <strong className="text-foreground">junk car buyers near you</strong>, we make it easy to sell your junk car, damaged car, wrecked vehicle, or non-running clunker and walk away with cash in hand the same day.
               </p>
               <p>
-                Whether your car has been sitting in the driveway for years, was totaled in an accident, failed inspection, or simply isn&apos;t worth fixing, our team will give you a fair, guaranteed price. We service every major city in southeast Michigan — including Detroit, Dearborn, Livonia, Westland, Garden City, Inkster, Romulus, Taylor, Canton, Plymouth, Ann Arbor, and beyond.
+                Whether your car has been sitting in the driveway for years, was totaled in an accident, failed inspection, or simply isn&apos;t worth fixing, our team will give you a fair, guaranteed price. We service every major city in southeast Michigan, including Detroit, Dearborn, Livonia, Westland, Garden City, Inkster, Romulus, Taylor, Canton, Plymouth, Ann Arbor, and beyond.
               </p>
               <p>
-                Tired of searching for &quot;<strong className="text-foreground">junk car buyers in Michigan</strong>&quot; or &quot;scrap car removal near me&quot;? Skip the middlemen. As a full-service automotive recycling company, we crush, dismantle, and recycle vehicles in-house — which means we can pay you more than tow truck operators or third-party buyers. Free towing, no hidden fees, and same-day pickup are standard with every offer.
+                Tired of searching for &quot;<strong className="text-foreground">junk car buyers in Michigan</strong>&quot; or &quot;scrap car removal near me&quot;? Skip the middlemen. As a full-service automotive recycling company, we crush, dismantle, and recycle vehicles in-house, which means we can pay you more than tow truck operators or third-party buyers. Free towing, no hidden fees, and same-day pickup are standard with every offer.
               </p>
             </div>
             <div className="mt-6 flex flex-wrap gap-2">
@@ -345,9 +348,9 @@ function HomePage() {
           <div className="mt-10 space-y-3">
             {[
               { q: "How much can I get for my junk car in Michigan?", a: "Most junk cars in Michigan sell between $200 and $5,000 depending on year, make, model, weight, and condition. We pay some of the highest local rates and offer guaranteed quotes by phone in minutes." },
-              { q: "Do you offer free junk car towing?", a: "Yes — free same-day towing is included with every accepted offer, anywhere in Wayne County and most of Metro Detroit." },
+              { q: "Do you offer free junk car towing?", a: "Yes, free same-day towing is included with every accepted offer, anywhere in Wayne County and most of Metro Detroit." },
               { q: "Do I need a title to sell my junk car?", a: "A title is preferred, but not always required. In many cases we can purchase your vehicle with just your driver&apos;s license and registration. Call us and we&apos;ll explain your options." },
-              { q: "What kinds of vehicles do you buy?", a: "Cars, trucks, SUVs, vans, and motorcycles — running or not, damaged, wrecked, flooded, or just unwanted. Any make, any model, any year." },
+              { q: "What kinds of vehicles do you buy?", a: "Cars, trucks, SUVs, vans, and motorcycles, running or not, damaged, wrecked, flooded, or just unwanted. Any make, any model, any year." },
               { q: "How fast can you pick up my car?", a: "Most pickups happen the same day you call. Many within 1–3 hours of accepting your offer." },
             ].map((f, i) => (
               <details key={i} className="group rounded-xl border border-border bg-card open:border-primary/40 transition-colors">
@@ -374,7 +377,7 @@ function HomePage() {
             <div className="text-xs font-bold uppercase tracking-widest text-primary">Visit Our Yard</div>
             <h2 className="mt-2 font-display text-4xl font-bold">Stop by or call us anytime</h2>
             <p className="mt-3 text-muted-foreground">
-              Located in the heart of Wayne, MI — easy to reach from anywhere in Metro Detroit.
+              Located in the heart of Wayne, MI. Easy to reach from anywhere in Metro Detroit.
             </p>
             <ul className="mt-6 space-y-4 text-sm">
               <li className="flex gap-3"><MapPin className="h-5 w-5 text-primary shrink-0" /><span>{business.address.full}</span></li>

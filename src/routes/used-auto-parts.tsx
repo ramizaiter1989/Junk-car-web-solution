@@ -18,7 +18,7 @@ export const Route = createFileRoute("/used-auto-parts")({
         site,
       ),
       description: callInMeta(
-        "Quality used auto parts in Michigan — engines, transmissions, body panels, electronics. Tested, warrantied, and ready to ship.",
+        "Quality used auto parts in Michigan: engines, transmissions, body panels, electronics. Tested, warrantied, and ready to ship.",
         business,
       ),
       business,
@@ -40,7 +40,7 @@ function PartsPage() {
     <>
       <PageHero
         eyebrow="Used Auto Parts"
-        title="Quality used auto parts — Michigan&apos;s trusted source."
+        title="Quality used auto parts. Michigan&apos;s trusted source."
         subtitle="Save up to 70% vs. new. Every part is inspected, tested, and backed by our warranty. Local pickup or nationwide shipping."
         crumbs={[{ label: "Home", to: "/" }, { label: "Used Auto Parts" }]}
       />
@@ -50,7 +50,7 @@ function PartsPage() {
           <div>
             <h2 className="font-display text-3xl sm:text-4xl font-bold">Huge inventory. Honest people. Real warranties.</h2>
             <p className="mt-4 text-muted-foreground leading-relaxed">
-              Our Wayne, MI warehouse is stocked with thousands of tested used auto parts pulled from late-model vehicles processed in our recycling yard. Whether you&apos;re a DIY weekend mechanic, an independent shop, or a body shop fleet — we&apos;ve got the parts you need at a fraction of dealer pricing.
+              Our Wayne, MI warehouse is stocked with thousands of tested used auto parts pulled from late-model vehicles processed in our recycling yard. Whether you&apos;re a DIY weekend mechanic, an independent shop, or a body shop fleet, we&apos;ve got the parts you need at a fraction of dealer pricing.
             </p>
             <ul className="mt-6 grid sm:grid-cols-2 gap-3">
               {[
@@ -69,14 +69,14 @@ function PartsPage() {
               ))}
             </ul>
             <p className="mt-6 text-sm text-muted-foreground">
-              Can&apos;t find your part? Call <strong className="text-foreground">{business.primaryPhone}</strong> — we source parts daily across our network of Michigan auto recyclers.
+              Can&apos;t find your part? Call <strong className="text-foreground">{business.primaryPhone}</strong>. We source parts daily across our network of Michigan auto recyclers.
             </p>
           </div>
           <img src={partsImg} alt="Warehouse of used auto parts for sale at Wayne Automotive Recyclers in Michigan" width={1280} height={896} loading="lazy" className="rounded-2xl border border-border shadow-2xl shadow-black/40" />
         </div>
       </section>
 
-      <CTASection title="Need a specific part?" subtitle="Call our parts team — most requests are answered within minutes." />
+      <CTASection title="Need a specific part?" subtitle="Call our parts team. Most requests are answered within minutes." />
     </>
   );
 }

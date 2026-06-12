@@ -22,7 +22,7 @@ export const Route = createFileRoute("/sell-your-junk-car")({
       ),
       business,
       site,
-      ogTitle: "Sell Your Junk Car in Michigan — Instant Cash Offer",
+      ogTitle: "Sell Your Junk Car in Michigan | Instant Cash Offer",
       ogDescription: "Get the most cash for your junk car in Michigan. Free towing and same-day pickup.",
     });
   },
@@ -34,7 +34,7 @@ function SellPage() {
     <>
       <PageHero
         eyebrow="Sell Your Junk Car"
-        title="Sell my junk car — for top cash, today."
+        title="Sell my junk car for top cash, today."
         subtitle="Skip Craigslist headaches and lowball tow operators. Get a guaranteed cash offer for your junk, damaged, or unwanted car in minutes."
         crumbs={[{ label: "Home", to: "/" }, { label: "Sell Your Junk Car" }]}
       />
@@ -44,7 +44,7 @@ function SellPage() {
           <div>
             <h2 className="font-display text-3xl font-bold">We buy every kind of junk car in Michigan</h2>
             <p className="mt-3 text-muted-foreground">
-              Wayne Automotive Recyclers buys cars, trucks, SUVs, vans, and motorcycles in any condition. Whether your vehicle is running, wrecked, flooded, or has been parked for years — we want it, and we&apos;ll pay you top cash.
+              Wayne Automotive Recyclers buys cars, trucks, SUVs, vans, and motorcycles in any condition. Whether your vehicle is running, wrecked, flooded, or has been parked for years, we want it and we&apos;ll pay you top cash.
             </p>
             <ul className="mt-6 grid sm:grid-cols-2 gap-3">
               {[
@@ -76,13 +76,13 @@ function SellPage() {
             <div className="lg:sticky top-24 rounded-2xl border border-border bg-card p-6 shadow-2xl shadow-black/30">
               <h3 className="font-display text-2xl font-bold">Get my offer</h3>
               <p className="text-sm text-muted-foreground mt-1 mb-5">30 seconds. Guaranteed price.</p>
-              <OpenQuoteButton size="lg" trackLabel="Get Quote — Sell page" />
+              <OpenQuoteButton size="lg" trackLabel="Get Quote: Sell page" />
             </div>
           </aside>
         </div>
       </section>
 
-      <CTASection title="Don&apos;t let that junk car sit another day." subtitle="Call now for an instant offer — and we&apos;ll have it gone before sundown." />
+      <CTASection title="Don&apos;t let that junk car sit another day." subtitle="Call now for an instant offer and we&apos;ll have it gone before sundown." />
     </>
   );
 }

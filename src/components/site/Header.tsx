@@ -5,6 +5,7 @@ import { useSiteBusiness } from "@/lib/use-site-business";
 import { useSiteConfig } from "@/lib/use-site-config";
 import { trackCallAttrs } from "@/lib/website-tracking";
 import { SiteLogo } from "@/components/site/SiteLogo";
+import { ThemeToggle } from "@/components/site/ThemeToggle";
 
 const nav = [
   { to: "/", label: "Home" },
@@ -78,6 +79,7 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <ThemeToggle className="hidden sm:inline-flex" />
             <a
               href={business.primaryPhoneHref}
               {...trackCallAttrs("Header", business.primaryPhone)}
@@ -100,6 +102,12 @@ export function Header() {
       {open && (
         <div className="xl:hidden border-t border-border bg-background/95 backdrop-blur-xl">
           <nav className="mx-auto max-w-7xl px-4 py-3 grid gap-1">
+            <div className="flex items-center justify-between px-3 py-2 sm:hidden">
+              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Appearance
+              </span>
+              <ThemeToggle />
+            </div>
             {nav.map((n) => (
               <Link
                 key={n.to}

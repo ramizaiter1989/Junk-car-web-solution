@@ -86,7 +86,7 @@ export function storeConsentChoice(granted: boolean) {
   }
 }
 
-/** Inline script — must run before GTM / gtag.js. */
+/** Inline script. Must run before GTM / gtag.js. */
 export function buildConsentModeInitScript() {
   const regions = JSON.stringify(CONSENT_REQUIRED_REGIONS);
   return `

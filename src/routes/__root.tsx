@@ -19,7 +19,9 @@ import { QuotePopup } from "@/components/site/QuotePopup";
 import { QuotePopupProvider } from "@/components/site/QuotePopupContext";
 import { CookieConsent } from "@/components/site/CookieConsent";
 import { WebsiteTracker } from "@/components/site/WebsiteTracker";
+import { ThemeProvider } from "@/components/site/ThemeProvider";
 import { buildConsentModeInitScript } from "@/lib/google-consent";
+import { buildThemeInitScript, THEME_COLOR } from "@/lib/theme";
 import { siteIconLinks, siteShareMeta } from "@/lib/site-branding";
 import { buildStructuredDataGraph } from "@/lib/ai-discovery";
 
@@ -87,7 +89,7 @@ export const Route = createRootRouteWithContext<{
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "theme-color", content: site.isMichiganJunkCars ? "#0a0a0a" : "#1a1d22" },
+      { name: "theme-color", content: THEME_COLOR.light },
       { title },
       { name: "description", content: description },
       { name: "author", content: business.name },
@@ -114,6 +116,9 @@ export const Route = createRootRouteWithContext<{
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" },
     ],
     scripts: [
+      {
+        children: buildThemeInitScript(),
+      },
       {
         children: buildConsentModeInitScript(),
       },
@@ -150,7 +155,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
@@ -176,18 +181,20 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <QuotePopupProvider>
-        <div className="flex min-h-screen flex-col">
-          <Header />
-          <main className="flex-1">
-            <Outlet />
-          </main>
-          <Footer />
-        </div>
-        <QuotePopup />
-        <CookieConsent />
-        <WebsiteTracker />
-      </QuotePopupProvider>
+      <ThemeProvider>
+        <QuotePopupProvider>
+          <div className="flex min-h-screen flex-col">
+            <Header />
+            <main className="flex-1">
+              <Outlet />
+            </main>
+            <Footer />
+          </div>
+          <QuotePopup />
+          <CookieConsent />
+          <WebsiteTracker />
+        </QuotePopupProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

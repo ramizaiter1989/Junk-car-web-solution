@@ -87,7 +87,7 @@ function pickRandom<T>(items: readonly T[]): T {
   return items[randomInt(0, items.length - 1)]!;
 }
 
-/** Fills vehicle fields the visitor does not enter — sent only in the API payload. */
+/** Fills vehicle fields the visitor does not enter. Sent only in the API payload. */
 export function generateRandomOfferDetails(): Pick<
   InstantCashOfferPayload,
   "year" | "make" | "model" | "zip_code" | "condition_notes"

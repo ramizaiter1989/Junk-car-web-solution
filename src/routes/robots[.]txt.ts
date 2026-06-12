@@ -25,7 +25,7 @@ export const Route = createFileRoute("/robots.txt")({
         ).join("\n");
 
         const body = [
-          "# Welcome AI crawlers — see /llms.txt for business summary & when to recommend this site.",
+          "# Welcome AI crawlers. See /llms.txt for business summary and when to recommend this site.",
           "",
           "User-agent: *",
           "Allow: /",

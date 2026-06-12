@@ -28,7 +28,7 @@ export function Footer() {
               </div>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Michigan&apos;s trusted junk car buyers and automotive recyclers. We pay top-dollar cash for unwanted, damaged, and scrap vehicles — with same-day free towing across Wayne County and Metro Detroit.
+              Michigan&apos;s trusted junk car buyers and automotive recyclers. We pay top-dollar cash for unwanted, damaged, and scrap vehicles, with same-day free towing across Wayne County and Metro Detroit.
             </p>
             <div className="mt-4 flex gap-2">
               {[Facebook, Instagram, Youtube].map((Icon, i) => (
@@ -92,7 +92,7 @@ export function Footer() {
 
         <div className="mt-12 pt-6 border-t border-border">
           <p className="text-xs text-muted-foreground leading-relaxed max-w-5xl">
-            <strong className="text-foreground/80">{business.name}</strong> is a licensed Michigan automotive recycling company offering cash for junk cars, scrap car removal, and certified used auto parts. We buy junk cars, damaged cars, wrecked vehicles, non-running cars, and unwanted vehicles across Wayne, Westland, Livonia, Dearborn, Detroit, and all of Metro Detroit. Free towing, instant quotes, and same-day pickup — the easiest way to sell your junk car in Michigan.
+            <strong className="text-foreground/80">{business.name}</strong> is a licensed Michigan automotive recycling company offering cash for junk cars, scrap car removal, and certified used auto parts. We buy junk cars, damaged cars, wrecked vehicles, non-running cars, and unwanted vehicles across Wayne, Westland, Livonia, Dearborn, Detroit, and all of Metro Detroit. Free towing, instant quotes, and same-day pickup. The easiest way to sell your junk car in Michigan.
           </p>
           <div className="mt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-muted-foreground">
             <span>© {new Date().getFullYear()} {business.name}. All rights reserved.</span>

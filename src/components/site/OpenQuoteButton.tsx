@@ -22,7 +22,7 @@ export function OpenQuoteButton({
     return (
       <button
         type="button"
-        data-track="FAB — Get Cash Offer"
+        data-track="FAB: Get Cash Offer"
         data-track-cta="true"
         onClick={(event) => openQuotePopup(event.currentTarget)}
         className={cn(

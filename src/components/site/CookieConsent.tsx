@@ -5,7 +5,7 @@ import {
   updateGoogleConsent,
 } from "@/lib/google-consent";
 
-const CONSENT_BANNER_DELAY_MS = 60_000;
+const CONSENT_BANNER_DELAY_MS = 120_000;
 
 export function CookieConsent() {
   const [visible, setVisible] = useState(false);

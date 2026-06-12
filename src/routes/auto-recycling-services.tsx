@@ -27,7 +27,7 @@ export const Route = createFileRoute("/auto-recycling-services")({
         "Auto Recycling Services Michigan | Michigan Junk Cars",
         site,
       ),
-      ogDescription: "Licensed Michigan auto recycling company — eco-friendly, EPA-compliant, full-service.",
+      ogDescription: "Licensed Michigan auto recycling company. Eco-friendly, EPA-compliant, full-service.",
     });
   },
   component: RecyclingPage,
@@ -38,7 +38,7 @@ function RecyclingPage() {
     <>
       <PageHero
         eyebrow="Auto Recycling Services"
-        title="Certified automotive recycling — done responsibly."
+        title="Certified automotive recycling, done responsibly."
         subtitle="As a licensed Michigan automotive recycling company, we process every vehicle in-house using EPA-compliant procedures. Over 80% of each car is reused or recycled."
         crumbs={[{ label: "Home", to: "/" }, { label: "Auto Recycling Services" }]}
       />
@@ -52,7 +52,7 @@ function RecyclingPage() {
               From the moment a vehicle arrives at our Wayne, MI yard, it&apos;s drained, depolluted, and dismantled following strict environmental guidelines. Reusable parts are inventoried for resale, hazardous fluids are recovered, and the remaining hulk is crushed and processed for scrap metal recycling.
             </p>
             <p className="mt-3 text-muted-foreground leading-relaxed">
-              This in-house process is what allows us to pay more cash for junk cars than tow services or middlemen — and to do it with a clean environmental conscience.
+              This in-house process is what allows us to pay more cash for junk cars than tow services or middlemen, and to do it with a clean environmental conscience.
             </p>
           </div>
         </div>
@@ -60,7 +60,7 @@ function RecyclingPage() {
         <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {[
             { Icon: Droplets, t: "Fluid recovery", d: "Oil, coolant, fuel, refrigerant, and brake fluid are safely captured and recycled." },
-            { Icon: Cog, t: "Parts reclamation", d: "Engines, transmissions, body panels, electronics, and more — tested and resold." },
+            { Icon: Cog, t: "Parts reclamation", d: "Engines, transmissions, body panels, electronics, and more, tested and resold." },
             { Icon: Factory, t: "Scrap metal processing", d: "Steel, aluminum, and copper recovered and sent to U.S. mills for new production." },
             { Icon: Recycle, t: "Tire & battery recycling", d: "End-of-life tires and lead-acid batteries diverted from landfills." },
           ].map(({ Icon, t, d }) => (
@@ -73,7 +73,7 @@ function RecyclingPage() {
         </div>
       </section>
 
-      <CTASection title="Partner with a real automotive recycler." subtitle="Insurance write-offs, fleet end-of-life, dealer trade-ins — we handle volume." />
+      <CTASection title="Partner with a real automotive recycler." subtitle="Insurance write-offs, fleet end-of-life, dealer trade-ins. We handle volume." />
     </>
   );
 }

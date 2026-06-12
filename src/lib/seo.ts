@@ -45,7 +45,7 @@ export function buildPageHead({
       {
         property: "og:image:alt",
         content: site.isMichiganJunkCars
-          ? "Michigan Junk Cars — cash for junk cars in Michigan"
+          ? "Michigan Junk Cars: cash for junk cars in Michigan"
           : resolvedOgTitle,
       },
       { name: "twitter:card", content: site.isMichiganJunkCars ? "summary" : "summary_large_image" },

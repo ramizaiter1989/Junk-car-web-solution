@@ -8,12 +8,12 @@ const faqs = [
   { q: "Is towing really free?", a: "Yes. Free junk car towing is included with every offer we make. There are no hidden fees or pickup charges deducted at the time of sale." },
   { q: "How fast can you pick up my junk car?", a: "Most pickups happen the same day you call, often within 1–3 hours of accepting your offer." },
   { q: "Do I need a title to sell my junk car?", a: "A title is preferred, but not always required. In many cases we can purchase your vehicle with just your driver's license and current registration. Call us to confirm your options." },
-  { q: "What if my car doesn't run?", a: "No problem at all — we buy non-running, wrecked, damaged, and totaled cars every single day. That's our specialty." },
+  { q: "What if my car doesn't run?", a: "No problem at all. We buy non-running, wrecked, damaged, and totaled cars every single day. That's our specialty." },
   { q: "What vehicles do you buy?", a: "Cars, trucks, SUVs, vans, and motorcycles. Any make, model, or year. Running or not. Damaged, flooded, fire, or unwanted." },
   { q: "Do you buy fleet or commercial vehicles?", a: "Yes. We work with insurance companies, fleet managers, dealers, and municipalities on volume removals across Michigan." },
   { q: "How do I get paid?", a: "Cash on the spot at the time of pickup. We can also pay by check on request." },
-  { q: "Where do you buy junk cars?", a: "Anywhere in Wayne County and Metro Detroit — including Wayne, Westland, Detroit, Dearborn, Livonia, Romulus, Canton, Ann Arbor, and surrounding areas." },
-  { q: "What happens to my car after pickup?", a: "It's taken to our licensed Wayne, MI recycling yard, drained of fluids, depolluted, dismantled for reusable parts, then crushed and processed for scrap metal — all under EPA-compliant procedures." },
+  { q: "Where do you buy junk cars?", a: "Anywhere in Wayne County and Metro Detroit, including Wayne, Westland, Detroit, Dearborn, Livonia, Romulus, Canton, Ann Arbor, and surrounding areas." },
+  { q: "What happens to my car after pickup?", a: "It's taken to our licensed Wayne, MI recycling yard, drained of fluids, depolluted, dismantled for reusable parts, then crushed and processed for scrap metal, all under EPA-compliant procedures." },
   { q: "Do you sell used auto parts?", a: "Yes. Our Wayne facility carries thousands of tested, warrantied used auto parts. Call our parts team or visit the Used Auto Parts page." },
 ];
 
@@ -29,11 +29,11 @@ export const Route = createFileRoute("/faq")({
         site,
       ),
       description:
-        "Answers to the most common questions about selling junk cars in Michigan — pricing, towing, titles, pickup speed, and more.",
+        "Answers to the most common questions about selling junk cars in Michigan: pricing, towing, titles, pickup speed, and more.",
       business,
       site,
-      ogTitle: brandTitle("Junk Car FAQ — Wayne Automotive Recyclers", "Junk Car FAQ — Michigan Junk Cars", site),
-      ogDescription: "Pricing, towing, paperwork, and pickup — all your junk car questions answered.",
+      ogTitle: brandTitle("Junk Car FAQ | Wayne Automotive Recyclers", "Junk Car FAQ | Michigan Junk Cars", site),
+      ogDescription: "Pricing, towing, paperwork, and pickup. All your junk car questions answered.",
     }),
     scripts: [
       {
